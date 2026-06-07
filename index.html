@@ -1133,6 +1133,7 @@ function salvarAvaliacao() {
   // Update datalist
   updateResidentesList();
   showToast('✓ Avaliação salva com sucesso!');
+  sincronizarAuto('avaliacao', avaliacao);
   limparAvaliacao();
 }
 
@@ -1218,6 +1219,7 @@ function salvarFrequencia() {
   const freqs = load('frequencias');
   freqs.push(registro);
   save('frequencias', freqs);
+  sincronizarAuto('frequencia', registro);
   freqResidentes = [];
   renderFreqResidentes();
   renderConsolidado();
@@ -1366,6 +1368,7 @@ function salvarAutoaval() {
   const autos = load('autoavaliacoes');
   autos.push(auto);
   save('autoavaliacoes', autos);
+  sincronizarAuto('autoavaliacao', auto);
   showToast('✓ Autoavaliação salva!');
   document.getElementById('auto-reflexao').value = '';
 }
@@ -1449,19 +1452,190 @@ function renderDashboard() {
 }
 
 // ============================================================
-// SYNC (stub)
+// SYNC — Google Sheets via Apps Script
 // ============================================================
-function syncData() {
-  showToast('🔄 Sincronizando dados...', 'sucesso');
-  setTimeout(() => showToast('✓ Dados exportados para JSON'), 1200);
-  // Export JSON para clipboard
-  const dados = {
-    avaliacoes: load('avaliacoes'),
-    frequencias: load('frequencias'),
-    autoavaliacoes: load('autoavaliacoes'),
-    exportado_em: new Date().toISOString()
-  };
-  navigator.clipboard?.writeText(JSON.stringify(dados, null, 2)).catch(() => {});
+
+// ── Cole aqui a URL do seu Web App após publicar no Apps Script ──
+const APPS_SCRIPT_URL = localStorage.getItem('apps_script_url') || '';
+
+// Fila de itens pendentes para envio offline
+function getPendentes() { return JSON.parse(localStorage.getItem('sync_pendentes') || '[]'); }
+function setPendentes(arr) { localStorage.setItem('sync_pendentes', JSON.stringify(arr)); }
+function addPendente(tipo, dados) {
+  const pendentes = getPendentes();
+  pendentes.push({ tipo, dados, tentativas: 0, adicionado: Date.now() });
+  setPendentes(pendentes);
+  atualizarStatusSync();
+}
+function removerPendente(index) {
+  const pendentes = getPendentes();
+  pendentes.splice(index, 1);
+  setPendentes(pendentes);
+  atualizarStatusSync();
+}
+
+// ── Status visual no header ──────────────────────────────────
+function atualizarStatusSync() {
+  const pendentes = getPendentes();
+  const btn = document.querySelector('.header-sync-btn');
+  if(!btn) return;
+  if(!APPS_SCRIPT_URL) {
+    btn.innerHTML = '⚙️ Config';
+    btn.style.background = 'rgba(255,255,255,0.15)';
+    btn.onclick = abrirConfigSync;
+    return;
+  }
+  if(pendentes.length > 0) {
+    btn.innerHTML = `⏳ ${pendentes.length} pendente${pendentes.length>1?'s':''}`;
+    btn.style.background = 'rgba(245,166,35,0.4)';
+  } else {
+    btn.innerHTML = '✓ Sincronizado';
+    btn.style.background = 'rgba(0,168,107,0.4)';
+  }
+  btn.onclick = syncData;
+}
+
+// ── Enviar um item para o Sheets ─────────────────────────────
+async function enviarParaSheets(tipo, dados) {
+  if(!APPS_SCRIPT_URL) return false;
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' }, // Apps Script exige text/plain para CORS
+      body: JSON.stringify({ tipo, dados })
+    });
+    const json = await res.json();
+    return json.ok === true;
+  } catch(e) {
+    console.warn('[Sync] Offline ou erro:', e.message);
+    return false;
+  }
+}
+
+// ── Sync automático: chamado após cada salvar ────────────────
+async function sincronizarAuto(tipo, dados) {
+  if(!APPS_SCRIPT_URL) {
+    addPendente(tipo, dados);
+    return;
+  }
+  // Tenta enviar agora
+  mostrarIndicadorSync(true);
+  const ok = await enviarParaSheets(tipo, dados);
+  mostrarIndicadorSync(false);
+  if(ok) {
+    showToast('☁️ Sincronizado com Google Sheets');
+    marcarSincronizado(dados.id);
+  } else {
+    // Offline — guarda na fila
+    addPendente(tipo, dados);
+    showToast('📵 Sem internet — salvo localmente', 'erro');
+  }
+  // Tenta esvaziar a fila de pendentes
+  processarFila();
+}
+
+// ── Processar fila de pendentes ──────────────────────────────
+async function processarFila() {
+  if(!APPS_SCRIPT_URL) return;
+  const pendentes = getPendentes();
+  if(!pendentes.length) return;
+  let enviados = 0;
+  for(let i = pendentes.length - 1; i >= 0; i--) {
+    const p = pendentes[i];
+    if(p.tentativas >= 5) continue; // desiste após 5 tentativas
+    const ok = await enviarParaSheets(p.tipo, p.dados);
+    if(ok) {
+      removerPendente(i);
+      marcarSincronizado(p.dados.id);
+      enviados++;
+    } else {
+      pendentes[i].tentativas++;
+      setPendentes(pendentes);
+      break; // Para se offline — não tenta os demais
+    }
+  }
+  if(enviados > 0) {
+    showToast(`☁️ ${enviados} registro${enviados>1?'s':''} sincronizado${enviados>1?'s':''}`);
+    atualizarStatusSync();
+  }
+}
+
+// ── Sync manual (botão no header) ───────────────────────────
+async function syncData() {
+  if(!APPS_SCRIPT_URL) { abrirConfigSync(); return; }
+  const pendentes = getPendentes();
+  if(!pendentes.length) {
+    // Envia tudo (batch completo para garantir)
+    mostrarIndicadorSync(true);
+    const ok = await enviarParaSheets('batch', {
+      avaliacoes: load('avaliacoes'),
+      frequencias: load('frequencias'),
+      autoavaliacoes: load('autoavaliacoes')
+    });
+    mostrarIndicadorSync(false);
+    showToast(ok ? '☁️ Tudo sincronizado!' : '📵 Sem internet — tente novamente', ok ? 'sucesso' : 'erro');
+    return;
+  }
+  showToast('🔄 Enviando pendentes...');
+  await processarFila();
+}
+
+// ── Marcar registro como sincronizado ───────────────────────
+function marcarSincronizado(id) {
+  const sinc = JSON.parse(localStorage.getItem('sync_ids') || '[]');
+  if(!sinc.includes(id)) { sinc.push(id); localStorage.setItem('sync_ids', JSON.stringify(sinc)); }
+}
+function jaSincronizado(id) {
+  return JSON.parse(localStorage.getItem('sync_ids') || '[]').includes(id);
+}
+
+// ── Indicador visual de loading ──────────────────────────────
+function mostrarIndicadorSync(ativo) {
+  const btn = document.querySelector('.header-sync-btn');
+  if(!btn) return;
+  btn.innerHTML = ativo ? '🔄 Enviando...' : (getPendentes().length ? `⏳ ${getPendentes().length} pend.` : '✓ Sync');
+}
+
+// ── Modal de configuração ────────────────────────────────────
+function abrirConfigSync() {
+  const modal = document.getElementById('modal-config-sync');
+  if(modal) {
+    document.getElementById('input-apps-url').value = APPS_SCRIPT_URL;
+    modal.classList.add('show');
+  }
+}
+function fecharConfigSync() {
+  document.getElementById('modal-config-sync')?.classList.remove('show');
+}
+function salvarConfigSync() {
+  const url = document.getElementById('input-apps-url').value.trim();
+  if(!url.startsWith('https://script.google.com')) {
+    showToast('URL inválida. Use a URL do Apps Script', 'erro'); return;
+  }
+  localStorage.setItem('apps_script_url', url);
+  // Recarrega constante
+  Object.defineProperty(window, 'APPS_SCRIPT_URL', { value: url, writable: true });
+  window.APPS_SCRIPT_URL_REAL = url;
+  fecharConfigSync();
+  atualizarStatusSync();
+  showToast('✓ URL salva! Testando conexão...');
+  setTimeout(testarConexao, 500);
+}
+async function testarConexao() {
+  const url = localStorage.getItem('apps_script_url');
+  if(!url) return;
+  try {
+    const res = await fetch(url);
+    const json = await res.json();
+    if(json.ok) {
+      showToast('✅ Conexão com Google Sheets OK!');
+      processarFila();
+    } else {
+      showToast('⚠️ Apps Script respondeu com erro', 'erro');
+    }
+  } catch(e) {
+    showToast('❌ Não foi possível conectar. Verifique a URL.', 'erro');
+  }
 }
 
 // ============================================================
@@ -1556,6 +1730,110 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.score-slider').forEach(s => updateScore(s));
   calcFinal();
 });
+</script>
+<!-- MODAL: CONFIGURAR GOOGLE SHEETS -->
+<div class="modal-overlay" id="modal-config-sync">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ Configurar Google Sheets</div>
+
+    <div style="font-size:12px; color:var(--cinza-escuro); margin-bottom:14px; line-height:1.6;">
+      Cole aqui a URL do seu Web App publicado no Google Apps Script. Os dados serão enviados automaticamente toda vez que você salvar uma avaliação.
+    </div>
+
+    <div style="background:rgba(0,180,200,0.08); border-left:3px solid var(--turquesa);
+      border-radius:8px; padding:10px 12px; font-size:11px; margin-bottom:14px; line-height:1.7;">
+      <strong>Como obter a URL:</strong><br>
+      1. Abra <strong>script.google.com</strong><br>
+      2. Crie novo projeto → cole o <code>Code.gs</code><br>
+      3. Clique em <strong>Implantar → Nova implantação</strong><br>
+      4. Tipo: <strong>App da Web</strong><br>
+      5. Executar como: <strong>Eu</strong><br>
+      6. Quem pode acessar: <strong>Qualquer pessoa</strong><br>
+      7. Copie a URL gerada e cole abaixo
+    </div>
+
+    <div class="form-group">
+      <label>URL do Web App</label>
+      <input type="text" id="input-apps-url"
+        placeholder="https://script.google.com/macros/s/...">
+    </div>
+
+    <div id="sync-pendentes-info" style="font-size:12px; color:var(--cinza-escuro); margin-bottom:12px;"></div>
+
+    <button class="btn btn-primary" onclick="salvarConfigSync()">✓ Salvar e Testar Conexão</button>
+    <button class="btn btn-secondary" onclick="fecharConfigSync()" style="margin-top:8px">Cancelar</button>
+  </div>
+</div>
+
+<script>
+// Inicialização extra após DOM carregado
+document.addEventListener('DOMContentLoaded', () => {
+  // Recupera URL salva
+  const url = localStorage.getItem('apps_script_url');
+  if(url) {
+    window.APPS_SCRIPT_URL_REAL = url;
+  }
+
+  // Atualiza status do botão
+  setTimeout(atualizarStatusSync, 300);
+
+  // Verifica e processa fila quando volta online
+  window.addEventListener('online', () => {
+    showToast('🌐 Conexão restaurada — enviando pendentes...');
+    setTimeout(processarFila, 1000);
+  });
+
+  // Mostra info de pendentes no modal ao abrir
+  document.getElementById('modal-config-sync')?.addEventListener('click', function(e) {
+    if(e.target === this) fecharConfigSync();
+    const p = getPendentes().length;
+    const el = document.getElementById('sync-pendentes-info');
+    if(el) el.textContent = p > 0
+      ? `⏳ ${p} registro${p>1?'s':''} aguardando sincronização`
+      : '✅ Nenhum registro pendente';
+  });
+});
+
+// Override APPS_SCRIPT_URL para usar o valor do localStorage dinamicamente
+function getScriptUrl() {
+  return localStorage.getItem('apps_script_url') || '';
+}
+// Patch nas funções que usam APPS_SCRIPT_URL
+const _enviarParaSheets = enviarParaSheets;
+async function enviarParaSheets(tipo, dados) {
+  const url = getScriptUrl();
+  if(!url) return false;
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ tipo, dados })
+    });
+    const json = await res.json();
+    return json.ok === true;
+  } catch(e) {
+    console.warn('[Sync] Offline ou erro:', e.message);
+    return false;
+  }
+}
+async function sincronizarAuto(tipo, dados) {
+  const url = getScriptUrl();
+  if(!url) {
+    addPendente(tipo, dados);
+    return;
+  }
+  mostrarIndicadorSync(true);
+  const ok = await enviarParaSheets(tipo, dados);
+  mostrarIndicadorSync(false);
+  if(ok) {
+    marcarSincronizado(dados.id);
+    atualizarStatusSync();
+  } else {
+    addPendente(tipo, dados);
+  }
+  atualizarStatusSync();
+}
 </script>
 </body>
 </html>
