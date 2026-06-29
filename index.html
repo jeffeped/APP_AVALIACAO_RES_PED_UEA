@@ -7,432 +7,293 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ResidPed UEA">
-<meta name="apple-touch-fullscreen" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="icons/icon-512.png">
-<title>ResidPed UEA – Avaliação de Residência Médica</title>
+<title>ResidPed UEA – Avaliação de Residência Médica em Pediatria</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Montserrat+Alternates:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --verde: #006B3F;
-  --verde-claro: #00A86B;
-  --verde-medio: #008C55;
-  --azul: #004A7C;
-  --azul-claro: #0072BC;
-  --turquesa: #00B4C8;
-  --turquesa-claro: #80D8E4;
-  --amarelo: #F5A623;
-  --vermelho: #D0021B;
-  --branco: #FFFFFF;
-  --cinza-claro: #F4F6F8;
-  --cinza-medio: #E1E6EB;
-  --cinza-escuro: #6B7785;
-  --texto: #1A2535;
-  --sombra: 0 2px 16px rgba(0,0,0,0.10);
-  --sombra-card: 0 4px 24px rgba(0,0,0,0.08);
-  --radius: 14px;
-  --radius-sm: 8px;
-  --font: 'Montserrat', sans-serif;
+  --verde:#006B3F; --verde-c:#00A86B; --verde-m:#008C55;
+  --azul:#004A7C; --azul-c:#0072BC;
+  --roxo:#6B2FA0; --roxo-c:#8B4FBF;
+  --turquesa:#00B4C8;
+  --amarelo:#F5A623; --vermelho:#D0021B;
+  --cinza-f:#F4F6F8; --cinza-m:#E1E6EB; --cinza-e:#6B7785;
+  --texto:#1A2535;
+  --r:14px; --rs:8px; --font:'Montserrat',sans-serif;
+  --card-shadow:0 4px 24px rgba(0,0,0,0.08);
 }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--font);background:var(--cinza-f);color:var(--texto);min-height:100vh;max-width:480px;margin:0 auto;overflow-x:hidden}
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+/* SPLASH */
+#splash{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,var(--verde) 0%,var(--azul) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;animation:splashOut .5s ease 2.2s forwards}
+.splash-icon{width:80px;height:80px;border-radius:22px;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;font-size:40px;animation:pulse 1.5s ease-in-out infinite}
+#splash h1{color:#fff;font-size:26px;font-weight:800}
+#splash p{color:rgba(255,255,255,.75);font-size:13px;font-weight:500}
+.uea-tag{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
+@keyframes splashOut{to{opacity:0;pointer-events:none;visibility:hidden}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 
-body {
-  font-family: var(--font);
-  background: var(--cinza-claro);
-  color: var(--texto);
-  min-height: 100vh;
-  max-width: 480px;
-  margin: 0 auto;
-  position: relative;
-  overflow-x: hidden;
-}
+/* HEADER */
+#app-header{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,var(--verde) 0%,var(--verde-m) 100%);padding:14px 16px 10px;box-shadow:0 2px 12px rgba(0,0,0,.2)}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.header-brand{display:flex;align-items:center;gap:10px}
+.header-icon{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer}
+.header-brand h1{color:#fff;font-size:16px;font-weight:800}
+.header-brand p{color:rgba(255,255,255,.75);font-size:10px;font-weight:500}
+.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s;font-family:var(--font)}
+.hbtn:active{background:rgba(255,255,255,.25)}
 
-/* ===== SPLASH ===== */
-#splash {
-  position: fixed; inset: 0; z-index: 9999;
-  background: linear-gradient(145deg, var(--verde) 0%, var(--azul) 100%);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 18px; animation: splashOut 0.5s ease 2s forwards;
-}
-#splash .logo-splash { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-#splash .logo-icon {
-  width: 80px; height: 80px; border-radius: 22px;
-  background: rgba(255,255,255,0.15);
-  border: 2px solid rgba(255,255,255,0.3);
-  display: flex; align-items: center; justify-content: center;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-#splash h1 { color: white; font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
-#splash p { color: rgba(255,255,255,0.75); font-size: 13px; font-weight: 500; }
-#splash .uea-tag {
-  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
-  color: white; font-size: 11px; font-weight: 600; padding: 4px 14px;
-  border-radius: 20px; letter-spacing: 1px; text-transform: uppercase;
-}
-@keyframes splashOut { to { opacity: 0; pointer-events: none; visibility: hidden; } }
-@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+/* TABS */
+.tab-bar{display:flex;overflow-x:auto;gap:4px;padding:0 4px 8px;scrollbar-width:none}
+.tab-bar::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 8px;border-radius:10px;border:none;cursor:pointer;background:rgba(255,255,255,.12);color:rgba(255,255,255,.65);font-family:var(--font);font-size:9px;font-weight:600;transition:all .2s;min-width:54px}
+.tab-btn .ti{font-size:15px}
+.tab-btn.active{background:#fff;color:var(--verde);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.tab-btn:active{transform:scale(.95)}
 
-/* ===== HEADER ===== */
-#app-header {
-  position: sticky; top: 0; z-index: 100;
-  background: linear-gradient(135deg, var(--verde) 0%, var(--verde-medio) 100%);
-  padding: 14px 16px 10px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-}
-.header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.header-brand { display: flex; align-items: center; gap: 10px; }
-.header-brand .icon {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center;
-}
-.header-brand h1 { color: white; font-size: 16px; font-weight: 800; }
-.header-brand p { color: rgba(255,255,255,0.75); font-size: 10px; font-weight: 500; }
-.header-sync-btn {
-  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25);
-  color: white; border-radius: 8px; padding: 6px 10px;
-  font-size: 11px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 4px;
-  transition: background 0.2s;
-}
-.header-sync-btn:active { background: rgba(255,255,255,0.25); }
+/* SCREENS */
+.screen{display:none;min-height:calc(100vh - 120px);padding-bottom:30px}
+.screen.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* ===== TABS ===== */
-.tab-bar {
-  display: flex; overflow-x: auto; gap: 4px; padding: 0 4px 8px;
-  scrollbar-width: none;
-}
-.tab-bar::-webkit-scrollbar { display: none; }
-.tab-btn {
-  flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 2px;
-  padding: 6px 10px; border-radius: 10px; border: none; cursor: pointer;
-  background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.65);
-  font-family: var(--font); font-size: 9.5px; font-weight: 600;
-  transition: all 0.2s; min-width: 58px;
-}
-.tab-btn .tab-icon { font-size: 16px; }
-.tab-btn.active { background: white; color: var(--verde); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-.tab-btn:active { transform: scale(0.95); }
+/* SECTION HEADER */
+.sec-hdr{padding:18px 16px}
+.sec-hdr.verde{background:linear-gradient(135deg,var(--verde) 0%,var(--verde-c) 100%)}
+.sec-hdr.azul{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-c) 100%)}
+.sec-hdr.roxo{background:linear-gradient(135deg,var(--roxo) 0%,var(--roxo-c) 100%)}
+.sec-hdr.turquesa{background:linear-gradient(135deg,var(--turquesa) 0%,#005F6B 100%)}
+.sec-hdr.amarelo{background:linear-gradient(135deg,#B06A00 0%,var(--amarelo) 100%)}
+.sec-hdr.escuro{background:linear-gradient(135deg,#1A2535 0%,#2C3E55 100%)}
+.sec-hdr h2{color:#fff;font-size:18px;font-weight:800}
+.sec-hdr p{color:rgba(255,255,255,.8);font-size:12px;margin-top:3px}
 
-/* ===== SCREENS ===== */
-.screen { display: none; min-height: calc(100vh - 120px); padding-bottom: 24px; }
-.screen.active { display: block; animation: fadeIn 0.25s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+/* CARD */
+.card{background:#fff;border-radius:var(--r);padding:16px;box-shadow:var(--card-shadow);margin:12px 12px 0}
+.card-title{font-size:13px;font-weight:700;color:var(--texto);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--verde);color:#fff}
+.badge.azul{background:var(--azul-c)}
+.badge.roxo{background:var(--roxo)}
 
-/* ===== SECTION HEADER ===== */
-.section-header {
-  background: linear-gradient(135deg, var(--azul) 0%, var(--azul-claro) 100%);
-  padding: 18px 16px; margin-bottom: 0;
-}
-.section-header.verde { background: linear-gradient(135deg, var(--verde) 0%, var(--verde-claro) 100%); }
-.section-header.turquesa { background: linear-gradient(135deg, var(--turquesa) 0%, #005F6B 100%); }
-.section-header.amarelo { background: linear-gradient(135deg, #B06A00 0%, var(--amarelo) 100%); }
-.section-header.roxo { background: linear-gradient(135deg, #4A1472 0%, #7B2FBE 100%); }
-.section-header h2 { color: white; font-size: 18px; font-weight: 800; }
-.section-header p { color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 3px; }
+/* FORM */
+.fg{margin-bottom:14px}
+label{display:block;font-size:11px;font-weight:700;color:var(--cinza-e);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+input[type=text],input[type=date],select,textarea{width:100%;padding:11px 13px;border:1.5px solid var(--cinza-m);border-radius:var(--rs);font-family:var(--font);font-size:13px;color:var(--texto);background:#fff;outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus,select:focus,textarea:focus{border-color:var(--verde);box-shadow:0 0 0 3px rgba(0,107,63,.1)}
+textarea{resize:none;height:80px}
+.fr{display:flex;gap:10px}
+.fr>*{flex:1}
 
-/* ===== CARD ===== */
-.card {
-  background: white; border-radius: var(--radius); padding: 16px;
-  box-shadow: var(--sombra-card); margin: 12px 12px 0;
-}
-.card-title { font-size: 13px; font-weight: 700; color: var(--texto); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-.card-title .badge {
-  font-size: 10px; font-weight: 700; padding: 2px 8px;
-  border-radius: 20px; background: var(--verde); color: white;
-}
-.card-title .badge.azul { background: var(--azul-claro); }
-.card-title .badge.turquesa { background: var(--turquesa); }
-.card-title .badge.amarelo { background: var(--amarelo); color: white; }
+/* BTN */
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:var(--rs);font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.btn+.btn{margin-top:10px}
+.btn-primary{background:linear-gradient(135deg,var(--verde) 0%,var(--verde-m) 100%);color:#fff;box-shadow:0 4px 12px rgba(0,107,63,.35)}
+.btn-azul{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-c) 100%);color:#fff;box-shadow:0 4px 12px rgba(0,74,124,.35)}
+.btn-roxo{background:linear-gradient(135deg,var(--roxo) 0%,var(--roxo-c) 100%);color:#fff;box-shadow:0 4px 12px rgba(107,47,160,.35)}
+.btn-secondary{background:var(--cinza-f);color:var(--texto);border:1.5px solid var(--cinza-m)}
+.btn-danger{background:rgba(208,2,27,.08);color:var(--vermelho);border:1.5px solid rgba(208,2,27,.2)}
+.btn-sm{padding:8px 14px;font-size:12px;width:auto;display:inline-block}
+.btn:active{transform:scale(.98)}
 
-/* ===== FORM ===== */
-.form-group { margin-bottom: 14px; }
-label { display: block; font-size: 11px; font-weight: 700; color: var(--cinza-escuro); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
-input[type=text], input[type=date], select, textarea {
-  width: 100%; padding: 11px 13px; border: 1.5px solid var(--cinza-medio);
-  border-radius: var(--radius-sm); font-family: var(--font); font-size: 13px;
-  color: var(--texto); background: white; outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-input:focus, select:focus, textarea:focus {
-  border-color: var(--verde); box-shadow: 0 0 0 3px rgba(0,107,63,0.1);
-}
-textarea { resize: none; height: 80px; }
+/* ALERT */
+.alert{border-radius:var(--rs);padding:10px 12px;font-size:12px;margin:10px 0;display:flex;align-items:flex-start;gap:8px;line-height:1.5}
+.alert.info{background:rgba(0,180,200,.1);border-left:3px solid var(--turquesa)}
+.alert.verde{background:rgba(0,107,63,.08);border-left:3px solid var(--verde)}
+.alert.aviso{background:rgba(245,166,35,.12);border-left:3px solid var(--amarelo)}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--texto);color:#fff;border-radius:10px;padding:12px 20px;font-size:13px;font-weight:600;z-index:9000;opacity:0;transition:all .3s;white-space:nowrap;max-width:90%;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.s{background:var(--verde)}
+.toast.e{background:var(--vermelho)}
+
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.5);align-items:flex-end;justify-content:center}
+.modal-ov.show{display:flex;animation:fadeIn .2s}
+.modal-box{background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:480px;max-height:85vh;overflow-y:auto;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:40px;height:4px;background:var(--cinza-m);border-radius:2px;margin:0 auto 16px}
+.modal-title{font-size:16px;font-weight:800;margin-bottom:14px}
+
+/* MISC */
+.divider{height:1px;background:var(--cinza-f);margin:14px 0}
+.empty{text-align:center;padding:36px 20px;color:var(--cinza-e)}
+.empty .ei{font-size:44px;margin-bottom:10px}
+.empty p{font-size:13px}
+
+/* ===== YEAR TABS (R1/R2/R3) ===== */
+.year-tabs{display:flex;gap:6px;margin-bottom:12px}
+.ytab{flex:1;padding:9px 4px;border:2px solid var(--cinza-m);border-radius:8px;background:#fff;font-family:var(--font);font-size:13px;font-weight:800;cursor:pointer;text-align:center;transition:all .2s}
+.ytab:active{transform:scale(.97)}
+.ytab.R1.sel{border-color:var(--azul);background:rgba(0,74,124,.08);color:var(--azul)}
+.ytab.R2.sel{border-color:var(--roxo);background:rgba(107,47,160,.08);color:var(--roxo)}
+.ytab.R3.sel{border-color:var(--verde);background:rgba(0,107,63,.08);color:var(--verde)}
+
+/* ===== DAY NAVIGATION ===== */
+.day-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.day-date{font-size:14px;font-weight:800;color:var(--texto)}
+.day-nav{display:flex;align-items:center;gap:8px}
+.day-nav-btn{background:var(--cinza-f);border:1.5px solid var(--cinza-m);border-radius:6px;padding:5px 10px;font-size:14px;cursor:pointer;transition:background .15s;font-family:var(--font)}
+.day-nav-btn:active{background:var(--cinza-m)}
+
+/* ===== ATTENDANCE TABLE ===== */
+.att-table{width:100%;border-collapse:collapse;font-size:11px}
+.att-table th{background:linear-gradient(135deg,var(--verde) 0%,var(--verde-c) 100%);color:#fff;padding:8px 6px;font-weight:700;text-align:center;font-size:10px;text-transform:uppercase}
+.att-table th:first-child{text-align:left;border-radius:8px 0 0 0}
+.att-table th:last-child{border-radius:0 8px 0 0}
+.att-table td{padding:7px 4px;border-bottom:1px solid var(--cinza-f);vertical-align:middle;text-align:center}
+.att-table td:first-child{text-align:left;font-weight:600;font-size:12px;padding-left:4px}
+.att-table tr:last-child td{border-bottom:none}
+.att-table tr:hover td{background:rgba(0,107,63,.03)}
+.att-btn{width:36px;height:32px;border:2px solid var(--cinza-m);border-radius:8px;background:var(--cinza-f);font-size:13px;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;justify-content:center;font-weight:800;color:var(--cinza-e)}
+.att-btn:active{transform:scale(.88)}
+.att-btn.P{background:rgba(0,107,63,.1);border-color:var(--verde);color:var(--verde)}
+.att-btn.A{background:rgba(208,2,27,.08);border-color:var(--vermelho);color:var(--vermelho)}
+.att-btn.T{background:rgba(245,166,35,.12);border-color:var(--amarelo);color:#B06A00}
+
+/* ===== RESIDENT CARDS ===== */
+.res-card{background:#fff;border-radius:var(--rs);padding:13px 14px;margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;align-items:center;gap:12px;border-left:4px solid var(--cinza-m)}
+.res-card.ok{border-left-color:var(--verde)}
+.res-card.medio{border-left-color:var(--amarelo)}
+.res-card.baixo{border-left-color:var(--vermelho)}
+.res-avatar{width:36px;height:36px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.res-avatar.R1{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-c) 100%)}
+.res-avatar.R2{background:linear-gradient(135deg,var(--roxo) 0%,var(--roxo-c) 100%)}
+.res-avatar.R3{background:linear-gradient(135deg,var(--verde) 0%,var(--verde-c) 100%)}
+.res-name{font-size:13px;font-weight:700;color:var(--texto);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res-sub{font-size:11px;color:var(--cinza-e);margin-top:2px}
+
+/* MINI STATS */
+.mini-stats{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap}
+.mini-stat{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:var(--cinza-f);color:var(--cinza-e)}
+.mini-stat.verde{background:rgba(0,107,63,.1);color:var(--verde)}
+.mini-stat.amarelo{background:rgba(245,166,35,.12);color:#7A4A00}
+.mini-stat.vermelho{background:rgba(208,2,27,.1);color:var(--vermelho)}
+.mini-stat.azul{background:rgba(0,114,188,.1);color:var(--azul-c)}
+
+/* STAT BOXES (3-col grid) */
+.stat-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat-box{background:var(--cinza-f);border-radius:var(--rs);padding:12px 8px;text-align:center;border:1.5px solid var(--cinza-m)}
+.stat-box .sv{font-size:20px;font-weight:800;line-height:1;color:var(--cinza-e)}
+.stat-box .sl{font-size:9px;font-weight:600;color:var(--cinza-e);margin-top:3px;text-transform:uppercase}
+.stat-box.verde{background:rgba(0,107,63,.06);border-color:rgba(0,107,63,.2)}.stat-box.verde .sv{color:var(--verde)}
+.stat-box.azul{background:rgba(0,114,188,.06);border-color:rgba(0,114,188,.2)}.stat-box.azul .sv{color:var(--azul-c)}
+.stat-box.roxo{background:rgba(107,47,160,.06);border-color:rgba(107,47,160,.2)}.stat-box.roxo .sv{color:var(--roxo)}
+.stat-box.amarelo{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3)}.stat-box.amarelo .sv{color:#B06A00}
+.stat-box.vermelho{background:rgba(208,2,27,.06);border-color:rgba(208,2,27,.2)}.stat-box.vermelho .sv{color:var(--vermelho)}
+
+/* PROG BAR */
+.pb-wrap{margin:6px 0 4px}
+.pb-label{display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px}
+.pb-label span:first-child{font-weight:600}
+.pb-label span:last-child{font-weight:700}
+.pb-bg{height:8px;background:var(--cinza-m);border-radius:4px;overflow:hidden}
+.pb{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.34,1.56,.64,1)}
+.pb.verde{background:linear-gradient(90deg,var(--verde) 0%,var(--verde-c) 100%)}
+.pb.amarelo{background:linear-gradient(90deg,#7A4A00 0%,var(--amarelo) 100%)}
+.pb.vermelho{background:linear-gradient(90deg,var(--vermelho) 0%,#FF4D63 100%)}
 
 /* ===== SCORE SLIDER ===== */
-.score-item { margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px solid var(--cinza-claro); }
-.score-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-.score-label { font-size: 12px; font-weight: 600; color: var(--texto); margin-bottom: 8px; line-height: 1.4; }
-.score-row { display: flex; align-items: center; gap: 10px; }
-.score-slider {
-  -webkit-appearance: none; appearance: none;
-  flex: 1; height: 6px; border-radius: 3px; outline: none;
-  background: var(--cinza-medio); cursor: pointer;
-  transition: background 0.2s;
-}
-.score-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 22px; height: 22px;
-  border-radius: 50%; background: var(--verde);
-  cursor: pointer; box-shadow: 0 2px 6px rgba(0,107,63,0.4);
-  transition: transform 0.15s;
-}
-.score-slider::-webkit-slider-thumb:active { transform: scale(1.2); }
-.score-val {
-  min-width: 38px; text-align: center; font-size: 16px; font-weight: 800;
-  color: var(--verde); background: rgba(0,107,63,0.08);
-  border-radius: 8px; padding: 3px 6px;
-}
-.score-val.medio { color: var(--amarelo); background: rgba(245,166,35,0.12); }
-.score-val.baixo { color: var(--vermelho); background: rgba(208,2,27,0.08); }
+.score-item{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--cinza-f)}
+.score-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.score-label{font-size:12px;font-weight:600;color:var(--texto);margin-bottom:8px;line-height:1.4}
+.score-row{display:flex;align-items:center;gap:10px}
+.score-slider{-webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:3px;outline:none;background:var(--cinza-m);cursor:pointer}
+.score-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--verde);cursor:pointer;box-shadow:0 2px 6px rgba(0,107,63,.4)}
+.score-val{min-width:38px;text-align:center;font-size:16px;font-weight:800;color:var(--verde);background:rgba(0,107,63,.08);border-radius:8px;padding:3px 6px}
+.score-val.medio{color:var(--amarelo);background:rgba(245,166,35,.12)}
+.score-val.baixo{color:var(--vermelho);background:rgba(208,2,27,.08)}
+.dom-hdr-lbl{display:flex;align-items:center;justify-content:space-between;margin:14px 0 10px}
+.dom-nome{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:var(--azul);display:flex;align-items:center;gap:6px}
+.dom-media{font-size:12px;font-weight:700;color:var(--cinza-e);background:var(--cinza-f);border-radius:20px;padding:3px 10px}
 
-.dominio-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin: 14px 0 10px;
-}
-.dominio-nome {
-  font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px;
-  color: var(--azul); display: flex; align-items: center; gap: 6px;
-}
-.dominio-media {
-  font-size: 12px; font-weight: 700; color: var(--cinza-escuro);
-  background: var(--cinza-claro); border-radius: 20px; padding: 3px 10px;
-}
+/* ===== CONCEITO ===== */
+.conceito-box{display:flex;align-items:center;justify-content:space-between;background:var(--cinza-f);border-radius:var(--rs);padding:12px 14px;margin-top:14px}
+.conceito-label{font-size:11px;font-weight:700;color:var(--cinza-e);text-transform:uppercase}
+.conceito-valor{font-size:20px;font-weight:800;color:var(--verde)}
+.conceito-texto{font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px}
+.conceito-texto.otimo{background:rgba(0,107,63,.12);color:var(--verde)}
+.conceito-texto.bom{background:rgba(0,114,188,.1);color:var(--azul-c)}
+.conceito-texto.regular{background:rgba(245,166,35,.15);color:#B06A00}
+.conceito-texto.insatisfatorio{background:rgba(208,2,27,.1);color:var(--vermelho)}
 
-/* ===== CONCEITO BADGE ===== */
-.conceito-box {
-  display: flex; align-items: center; justify-content: space-between;
-  background: var(--cinza-claro); border-radius: var(--radius-sm);
-  padding: 12px 14px; margin-top: 14px;
-}
-.conceito-label { font-size: 11px; font-weight: 700; color: var(--cinza-escuro); text-transform: uppercase; }
-.conceito-valor { font-size: 20px; font-weight: 800; color: var(--verde); }
-.conceito-texto { font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
-.conceito-texto.otimo { background: rgba(0,107,63,0.12); color: var(--verde); }
-.conceito-texto.bom { background: rgba(0,114,188,0.1); color: var(--azul-claro); }
-.conceito-texto.regular { background: rgba(245,166,35,0.15); color: #B06A00; }
-.conceito-texto.insatisfatorio { background: rgba(208,2,27,0.1); color: var(--vermelho); }
+/* ===== HISTÓRICO ===== */
+.hist-item{background:#fff;border-radius:var(--rs);padding:14px;margin:8px 0;border-left:4px solid var(--verde);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.hist-item.baixo{border-left-color:var(--vermelho)}
+.hist-item.medio{border-left-color:var(--amarelo)}
+.hist-meta{font-size:11px;color:var(--cinza-e);margin-bottom:4px}
+.hist-nome{font-size:14px;font-weight:700;color:var(--texto)}
+.hist-nota{font-size:22px;font-weight:800}
+.hist-nota.verde{color:var(--verde)}
+.hist-nota.amarelo{color:var(--amarelo)}
+.hist-nota.vermelho{color:var(--vermelho)}
+.hist-chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.hist-chip{font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;background:var(--cinza-f);color:var(--cinza-e)}
 
-/* ===== BTN ===== */
-.btn {
-  display: block; width: 100%; padding: 14px; border: none;
-  border-radius: var(--radius-sm); font-family: var(--font);
-  font-size: 14px; font-weight: 700; cursor: pointer;
-  transition: all 0.2s; text-align: center;
-}
-.btn-primary { background: linear-gradient(135deg, var(--verde) 0%, var(--verde-medio) 100%); color: white; box-shadow: 0 4px 12px rgba(0,107,63,0.35); }
-.btn-primary:active { transform: scale(0.98); box-shadow: 0 2px 6px rgba(0,107,63,0.3); }
-.btn-secondary { background: var(--cinza-claro); color: var(--texto); border: 1.5px solid var(--cinza-medio); }
-.btn-danger { background: rgba(208,2,27,0.08); color: var(--vermelho); border: 1.5px solid rgba(208,2,27,0.2); }
-.btn-azul { background: linear-gradient(135deg, var(--azul) 0%, var(--azul-claro) 100%); color: white; box-shadow: 0 4px 12px rgba(0,74,124,0.35); }
-.btn-azul:active { transform: scale(0.98); }
-.btn + .btn { margin-top: 10px; }
+/* ===== FEEDBACK ===== */
+.fb-card{background:#fff;border-radius:var(--r);margin:8px 0;overflow:hidden;box-shadow:var(--card-shadow)}
+.fb-card-hdr{padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.fb-card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.fb-card-title{font-size:13px;font-weight:700;flex:1}
+.fb-card-tog{font-size:14px;color:var(--cinza-e);transition:transform .2s}
+.fb-card.open .fb-card-tog{transform:rotate(180deg)}
+.fb-card-body{display:none;padding:0 14px 14px}
+.fb-card.open .fb-card-body{display:block}
+.fb-card-body p{font-size:12.5px;line-height:1.6;color:var(--cinza-e);margin-bottom:8px}
+.fb-tip{background:var(--cinza-f);border-radius:var(--rs);padding:10px 12px;font-size:12px;color:var(--texto);margin-top:8px;border-left:3px solid var(--turquesa)}
 
-/* ===== FREQUENCIA ===== */
-.freq-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.freq-btn {
-  padding: 10px 4px; border: 2px solid transparent; border-radius: var(--radius-sm);
-  font-family: var(--font); font-size: 12px; font-weight: 700; cursor: pointer;
-  background: var(--cinza-claro); color: var(--cinza-escuro); transition: all 0.2s; text-align: center;
-}
-.freq-btn.presente.sel { background: rgba(0,107,63,0.1); border-color: var(--verde); color: var(--verde); }
-.freq-btn.ausente.sel { background: rgba(208,2,27,0.08); border-color: var(--vermelho); color: var(--vermelho); }
-.freq-btn.atraso.sel { background: rgba(245,166,35,0.12); border-color: var(--amarelo); color: #B06A00; }
-.freq-btn:active { transform: scale(0.96); }
-
-/* ===== HISTORICO ===== */
-.hist-item {
-  background: white; border-radius: var(--radius-sm); padding: 14px;
-  margin: 8px 0; border-left: 4px solid var(--verde);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
-.hist-item.baixo { border-left-color: var(--vermelho); }
-.hist-item.medio { border-left-color: var(--amarelo); }
-.hist-meta { font-size: 11px; color: var(--cinza-escuro); margin-bottom: 4px; }
-.hist-residente { font-size: 14px; font-weight: 700; color: var(--texto); }
-.hist-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
-.hist-nota { font-size: 22px; font-weight: 800; }
-.hist-nota.verde { color: var(--verde); }
-.hist-nota.amarelo { color: var(--amarelo); }
-.hist-nota.vermelho { color: var(--vermelho); }
-.hist-dominio-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
-.hist-chip {
-  font-size: 10px; font-weight: 600; padding: 2px 8px;
-  border-radius: 20px; background: var(--cinza-claro); color: var(--cinza-escuro);
-}
-.hist-btn-del {
-  background: none; border: none; cursor: pointer; color: var(--cinza-escuro);
-  font-size: 16px; padding: 4px; border-radius: 6px; transition: color 0.2s;
-}
-.hist-btn-del:active { color: var(--vermelho); }
-.empty-state {
-  text-align: center; padding: 40px 20px; color: var(--cinza-escuro);
-}
-.empty-state .icon { font-size: 48px; margin-bottom: 10px; }
-.empty-state p { font-size: 13px; }
-
-/* ===== FEEDBACK CARDS ===== */
-.feedback-card {
-  background: white; border-radius: var(--radius); margin: 8px 0;
-  overflow: hidden; box-shadow: var(--sombra-card);
-}
-.feedback-card-header {
-  padding: 12px 14px; display: flex; align-items: center; gap: 10px;
-  cursor: pointer; user-select: none;
-}
-.feedback-card-icon {
-  width: 38px; height: 38px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
-}
-.feedback-card-title { font-size: 13px; font-weight: 700; flex: 1; }
-.feedback-card-toggle { font-size: 14px; color: var(--cinza-escuro); transition: transform 0.2s; }
-.feedback-card.open .feedback-card-toggle { transform: rotate(180deg); }
-.feedback-card-body { display: none; padding: 0 14px 14px; }
-.feedback-card.open .feedback-card-body { display: block; }
-.feedback-card-body p { font-size: 12.5px; line-height: 1.6; color: var(--cinza-escuro); margin-bottom: 8px; }
-.feedback-card-body strong { color: var(--texto); }
-.feedback-tip {
-  background: var(--cinza-claro); border-radius: var(--radius-sm);
-  padding: 10px 12px; font-size: 12px; color: var(--texto); margin-top: 8px;
-  border-left: 3px solid var(--turquesa);
-}
-
-/* ===== AUTOAVALIACAO ===== */
-.competencia-item {
-  padding: 12px 0; border-bottom: 1px solid var(--cinza-claro);
-}
-.competencia-item:last-child { border-bottom: none; }
-.competencia-txt { font-size: 12.5px; color: var(--texto); line-height: 1.5; margin-bottom: 8px; }
-.likert-row { display: flex; gap: 6px; }
-.likert-btn {
-  flex: 1; padding: 8px 4px; border: 2px solid var(--cinza-medio); border-radius: 8px;
-  background: white; font-family: var(--font); font-size: 11px; font-weight: 700;
-  color: var(--cinza-escuro); cursor: pointer; text-align: center; transition: all 0.2s;
-}
-.likert-btn.sel-1 { border-color: var(--vermelho); background: rgba(208,2,27,0.08); color: var(--vermelho); }
-.likert-btn.sel-2 { border-color: var(--amarelo); background: rgba(245,166,35,0.1); color: #B06A00; }
-.likert-btn.sel-3 { border-color: var(--azul-claro); background: rgba(0,114,188,0.08); color: var(--azul-claro); }
-.likert-btn.sel-4 { border-color: var(--verde); background: rgba(0,107,63,0.08); color: var(--verde); }
-.likert-btn:active { transform: scale(0.95); }
-.likert-labels { display: flex; justify-content: space-between; font-size: 9px; color: var(--cinza-escuro); margin-top: 3px; }
+/* ===== AUTOAVALIAÇÃO ===== */
+.comp-item{padding:12px 0;border-bottom:1px solid var(--cinza-f)}
+.comp-item:last-child{border-bottom:none}
+.comp-txt{font-size:12.5px;color:var(--texto);line-height:1.5;margin-bottom:8px}
+.likert-row{display:flex;gap:6px}
+.likert-btn{flex:1;padding:8px 4px;border:2px solid var(--cinza-m);border-radius:8px;background:#fff;font-family:var(--font);font-size:11px;font-weight:700;color:var(--cinza-e);cursor:pointer;text-align:center;transition:all .2s;line-height:1.2}
+.likert-btn.sel-1{border-color:var(--vermelho);background:rgba(208,2,27,.08);color:var(--vermelho)}
+.likert-btn.sel-2{border-color:var(--amarelo);background:rgba(245,166,35,.1);color:#B06A00}
+.likert-btn.sel-3{border-color:var(--azul-c);background:rgba(0,114,188,.08);color:var(--azul-c)}
+.likert-btn.sel-4{border-color:var(--verde);background:rgba(0,107,63,.08);color:var(--verde)}
+.likert-btn:active{transform:scale(.95)}
+.likert-labels{display:flex;justify-content:space-between;font-size:9px;color:var(--cinza-e);margin-top:3px}
+.ano-sel{display:flex;gap:6px;margin-bottom:14px}
+.ano-btn{flex:1;padding:8px;border:2px solid var(--cinza-m);border-radius:8px;background:#fff;font-family:var(--font);font-size:12px;font-weight:700;color:var(--cinza-e);cursor:pointer;text-align:center;transition:all .2s}
+.ano-btn.sel{border-color:var(--verde);background:rgba(0,107,63,.08);color:var(--verde)}
 
 /* ===== DASHBOARD ===== */
-.dash-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.dash-stat {
-  background: white; border-radius: var(--radius-sm); padding: 14px;
-  box-shadow: var(--sombra-card); text-align: center;
-}
-.dash-stat .ds-val { font-size: 28px; font-weight: 800; line-height: 1; }
-.dash-stat .ds-label { font-size: 10px; font-weight: 600; color: var(--cinza-escuro); margin-top: 4px; text-transform: uppercase; }
-.dash-stat.verde .ds-val { color: var(--verde); }
-.dash-stat.azul .ds-val { color: var(--azul-claro); }
-.dash-stat.amarelo .ds-val { color: #B06A00; }
-.dash-stat.vermelho .ds-val { color: var(--vermelho); }
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dash-stat{background:#fff;border-radius:var(--rs);padding:14px;box-shadow:var(--card-shadow);text-align:center}
+.ds-val{font-size:28px;font-weight:800;line-height:1}
+.ds-label{font-size:10px;font-weight:600;color:var(--cinza-e);margin-top:4px;text-transform:uppercase}
+.dash-stat.verde .ds-val{color:var(--verde)}
+.dash-stat.azul .ds-val{color:var(--azul-c)}
+.dash-stat.amarelo .ds-val{color:#B06A00}
+.dash-stat.vermelho .ds-val{color:var(--vermelho)}
+.rank-item{display:flex;align-items:center;gap:12px;padding:12px;background:#fff;border-radius:var(--rs);margin-bottom:8px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.rank-pos{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;background:var(--cinza-f);color:var(--cinza-e)}
+.rank-pos.p1{background:#FFD700;color:#7A5C00}
+.rank-pos.p2{background:#C0C0C0;color:#555}
+.rank-pos.p3{background:#CD7F32;color:#5C3300}
 
-.rank-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 12px; background: white; border-radius: var(--radius-sm);
-  margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-.rank-pos {
-  width: 28px; height: 28px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 800; flex-shrink: 0;
-  background: var(--cinza-claro); color: var(--cinza-escuro);
-}
-.rank-pos.p1 { background: #FFD700; color: #7A5C00; }
-.rank-pos.p2 { background: #C0C0C0; color: #555; }
-.rank-pos.p3 { background: #CD7F32; color: #5C3300; }
-.rank-info { flex: 1; }
-.rank-nome { font-size: 13px; font-weight: 700; }
-.rank-sub { font-size: 11px; color: var(--cinza-escuro); }
-.rank-nota { font-size: 18px; font-weight: 800; color: var(--verde); }
-.rank-nota.amarelo { color: #B06A00; }
-.rank-nota.vermelho { color: var(--vermelho); }
+/* INSTALL/UPDATE BANNERS */
+#install-banner{position:fixed;bottom:0;left:0;right:0;z-index:8500;background:#fff;border-top:1px solid var(--cinza-m);padding:14px 16px;display:none;align-items:center;gap:12px;max-width:480px;margin:0 auto;box-shadow:0 -4px 20px rgba(0,0,0,.1)}
+#update-banner{position:fixed;top:0;left:0;right:0;z-index:8500;background:var(--azul);padding:12px 16px;display:none;align-items:center;gap:10px;max-width:480px;margin:0 auto}
 
-.prog-bar-wrap { margin: 6px 0 4px; }
-.prog-bar-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
-.prog-bar-label span:first-child { font-weight: 600; }
-.prog-bar-label span:last-child { font-weight: 700; color: var(--verde); }
-.prog-bar-bg { height: 8px; background: var(--cinza-medio); border-radius: 4px; overflow: hidden; }
-.prog-bar { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--verde) 0%, var(--verde-claro) 100%); transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1); }
-.prog-bar.amarelo { background: linear-gradient(90deg, #B06A00 0%, var(--amarelo) 100%); }
-.prog-bar.vermelho { background: linear-gradient(90deg, var(--vermelho) 0%, #FF4D63 100%); }
-
-/* ===== TOAST ===== */
-.toast {
-  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
-  background: var(--texto); color: white; border-radius: 10px; padding: 12px 20px;
-  font-size: 13px; font-weight: 600; z-index: 9000; opacity: 0;
-  transition: all 0.3s; white-space: nowrap; max-width: 90%;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+@media print{
+  #app-header,#install-banner,#update-banner,.btn,.modal-ov,#splash{display:none!important}
+  .screen{display:none!important}
+  body{max-width:100%}
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.sucesso { background: var(--verde); }
-.toast.erro { background: var(--vermelho); }
-
-/* ===== MODAL ===== */
-.modal-overlay {
-  display: none; position: fixed; inset: 0; z-index: 8000;
-  background: rgba(0,0,0,0.5); align-items: flex-end; justify-content: center;
-}
-.modal-overlay.show { display: flex; animation: fadeIn 0.2s; }
-.modal-box {
-  background: white; border-radius: 20px 20px 0 0; padding: 20px;
-  width: 100%; max-width: 480px; max-height: 80vh; overflow-y: auto;
-  animation: slideUp 0.3s ease;
-}
-@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.modal-handle { width: 40px; height: 4px; background: var(--cinza-medio); border-radius: 2px; margin: 0 auto 16px; }
-.modal-title { font-size: 16px; font-weight: 800; margin-bottom: 14px; }
-
-/* ===== MISC ===== */
-.divider { height: 1px; background: var(--cinza-claro); margin: 12px 0; }
-.text-muted { font-size: 12px; color: var(--cinza-escuro); }
-.flex-row { display: flex; gap: 10px; }
-.flex-row > * { flex: 1; }
-.tag-pill {
-  display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px;
-  border-radius: 20px; font-size: 11px; font-weight: 600;
-  background: var(--cinza-claro); color: var(--cinza-escuro);
-}
-.tag-pill.verde { background: rgba(0,107,63,0.1); color: var(--verde); }
-.tag-pill.azul { background: rgba(0,114,188,0.1); color: var(--azul-claro); }
-.tag-pill.amarelo { background: rgba(245,166,35,0.15); color: #B06A00; }
-.tag-pill.vermelho { background: rgba(208,2,27,0.1); color: var(--vermelho); }
-
-.ano-selector { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
-.ano-btn {
-  flex: 1; padding: 8px; border: 2px solid var(--cinza-medio); border-radius: 8px;
-  background: white; font-family: var(--font); font-size: 12px; font-weight: 700;
-  color: var(--cinza-escuro); cursor: pointer; text-align: center; transition: all 0.2s; min-width: 60px;
-}
-.ano-btn.sel { border-color: var(--verde); background: rgba(0,107,63,0.08); color: var(--verde); }
-.ano-btn:active { transform: scale(0.97); }
-
-.alert-box {
-  border-radius: var(--radius-sm); padding: 10px 12px;
-  font-size: 12px; margin: 10px 0; display: flex; align-items: flex-start; gap: 8px;
-}
-.alert-box.aviso { background: rgba(245,166,35,0.12); border-left: 3px solid var(--amarelo); }
-.alert-box.critico { background: rgba(208,2,27,0.08); border-left: 3px solid var(--vermelho); }
-.alert-box.info { background: rgba(0,180,200,0.1); border-left: 3px solid var(--turquesa); }
 </style>
 </head>
 <body>
 
 <!-- SPLASH -->
 <div id="splash">
-  <div class="logo-splash">
-    <div class="logo-icon">
-      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-        <path d="M22 8C14.268 8 8 14.268 8 22C8 29.732 14.268 36 22 36C29.732 36 36 29.732 36 22C36 14.268 29.732 8 22 8ZM22 12C25.5 12 28.6 13.5 30.8 15.9L26.5 20.2C25.5 19.1 24.1 18.5 22.5 18.5C19.5 18.5 17 21 17 24C17 27 19.5 29.5 22.5 29.5C25 29.5 27.1 27.9 27.8 25.7H22V22H32C32.1 22.6 32.2 23.3 32.2 24C32.2 29.6 27.6 34 22 34C16.5 34 12 29.5 12 24C12 18.5 16.5 14 22 14V12Z" fill="white"/>
-        <circle cx="22" cy="22" r="3" fill="rgba(255,255,255,0.5)"/>
-      </svg>
-    </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+    <div class="splash-icon">🩺</div>
     <h1>ResidPed UEA</h1>
-    <p>Sistema de Avaliação da Residência Médica</p>
+    <p>Avaliação da Residência Médica em Pediatria</p>
   </div>
   <div class="uea-tag">Universidade do Estado do Amazonas</div>
 </div>
@@ -441,61 +302,125 @@ textarea { resize: none; height: 80px; }
 <div id="app-header">
   <div class="header-top">
     <div class="header-brand">
-      <div class="icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/>
-        </svg>
-      </div>
+      <div class="header-icon">🩺</div>
       <div>
         <h1>ResidPed UEA</h1>
         <p>Residência Médica em Pediatria</p>
       </div>
     </div>
-    <button class="header-sync-btn" onclick="syncData()">
-      <span>↑</span> Sync
-    </button>
+    <button class="hbtn" id="btn-sync" onclick="syncData()">↑ Sync</button>
   </div>
   <div class="tab-bar">
-    <button class="tab-btn active" onclick="showScreen('avaliacao',this)">
-      <span class="tab-icon">📋</span>Avaliação
-    </button>
-    <button class="tab-btn" onclick="showScreen('frequencia',this)">
-      <span class="tab-icon">📅</span>Frequência
-    </button>
-    <button class="tab-btn" onclick="showScreen('historico',this)">
-      <span class="tab-icon">📊</span>Histórico
-    </button>
-    <button class="tab-btn" onclick="showScreen('feedback',this)">
-      <span class="tab-icon">💬</span>Feedback
-    </button>
-    <button class="tab-btn" onclick="showScreen('autoaval',this)">
-      <span class="tab-icon">🔍</span>Autoaval.
-    </button>
-    <button class="tab-btn" onclick="showScreen('dashboard',this)">
-      <span class="tab-icon">📈</span>Dashboard
-    </button>
+    <button class="tab-btn active" data-screen="home" onclick="showScreen('home',this)"><span class="ti">🏠</span>Início</button>
+    <button class="tab-btn" data-screen="turma" onclick="showScreen('turma',this)"><span class="ti">👥</span>Residentes</button>
+    <button class="tab-btn" data-screen="avaliacao" onclick="showScreen('avaliacao',this)"><span class="ti">📋</span>Avaliação</button>
+    <button class="tab-btn" data-screen="historico" onclick="showScreen('historico',this)"><span class="ti">📊</span>Histórico</button>
+    <button class="tab-btn" data-screen="feedback" onclick="showScreen('feedback',this)"><span class="ti">💬</span>Feedback</button>
+    <button class="tab-btn" data-screen="autoaval" onclick="showScreen('autoaval',this)"><span class="ti">🔍</span>Autoaval.</button>
+    <button class="tab-btn" data-screen="dashboard" onclick="showScreen('dashboard',this)"><span class="ti">📈</span>Dashboard</button>
+    <button class="tab-btn" data-screen="config" onclick="showScreen('config',this)"><span class="ti">⚙️</span>Config</button>
   </div>
 </div>
 
 <!-- ============================================================ -->
-<!-- ABA 1: AVALIAÇÃO DO RESIDENTE (PRECEPTOR) -->
+<!-- TELA: INÍCIO (frequência diária) -->
 <!-- ============================================================ -->
-<div id="screen-avaliacao" class="screen active">
-  <div class="section-header verde">
-    <h2>📋 Avaliação Trimestral</h2>
-    <p>Avaliação do médico residente pelo preceptor</p>
+<div id="screen-home" class="screen active">
+  <div class="sec-hdr verde">
+    <h2>🏠 Frequência do Dia</h2>
+    <p id="home-hdr-sub">Marque a presença dos residentes</p>
+  </div>
+
+  <div class="card">
+    <!-- Year selector -->
+    <div id="home-year-tabs" class="year-tabs">
+      <button class="ytab R1 sel" data-year="R1" onclick="selectHomeYear('R1',this)">R1</button>
+      <button class="ytab R2" data-year="R2" onclick="selectHomeYear('R2',this)">R2</button>
+      <button class="ytab R3" data-year="R3" onclick="selectHomeYear('R3',this)">R3</button>
+    </div>
+    <div style="font-size:11px;color:var(--cinza-e);margin-bottom:10px;font-weight:600" id="home-mod-label">–</div>
+
+    <!-- Day nav -->
+    <div class="day-header">
+      <div class="day-date" id="home-day-label">–</div>
+      <div class="day-nav">
+        <button class="day-nav-btn" onclick="changeDay(-1)">‹</button>
+        <button class="day-nav-btn" onclick="changeDay(0)" style="font-size:11px;font-weight:700">Hoje</button>
+        <button class="day-nav-btn" onclick="changeDay(1)">›</button>
+      </div>
+    </div>
+
+    <!-- Att table -->
+    <div style="overflow-x:auto">
+      <table class="att-table">
+        <thead><tr>
+          <th>Residente</th>
+          <th id="home-col-m">🌅 Manhã</th>
+          <th id="home-col-t">🌆 Tarde</th>
+        </tr></thead>
+        <tbody id="home-att-body"></tbody>
+      </table>
+    </div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="btn btn-primary btn-sm" onclick="markAllDay('P')" style="flex:1;padding:10px;font-size:12px">✓ Todos Presentes</button>
+      <button class="btn btn-secondary btn-sm" onclick="markAllDay('A')" style="flex:1;padding:10px;font-size:12px">✕ Todos Ausentes</button>
+      <button class="btn btn-secondary btn-sm" onclick="markAllDay(null)" style="flex:1;padding:10px;font-size:12px">○ Limpar</button>
+    </div>
+  </div>
+
+  <!-- Day summary: all years -->
+  <div class="card">
+    <div class="card-title">📊 Resumo do Dia</div>
+    <div id="home-summary" class="stat-grid-3"></div>
+    <div style="margin-top:10px;font-size:10px;color:var(--cinza-e);text-align:center">
+      ○ Sem registro · ✓ Presente · ✕ Ausente · ⏱ Atraso
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TELA: RESIDENTES (Turma) -->
+<!-- ============================================================ -->
+<div id="screen-turma" class="screen">
+  <div class="sec-hdr azul">
+    <h2>👥 Residentes</h2>
+    <p>R1 · R2 · R3 — 6 por ano</p>
+  </div>
+
+  <div class="card">
+    <div id="turma-year-tabs" class="year-tabs">
+      <button class="ytab R1 sel" data-year="R1" onclick="selectTurmaYear('R1',this)">R1 <span id="cnt-R1">(0)</span></button>
+      <button class="ytab R2" data-year="R2" onclick="selectTurmaYear('R2',this)">R2 <span id="cnt-R2">(0)</span></button>
+      <button class="ytab R3" data-year="R3" onclick="selectTurmaYear('R3',this)">R3 <span id="cnt-R3">(0)</span></button>
+    </div>
+    <div style="font-size:11px;color:var(--cinza-e);margin-bottom:12px;font-weight:600" id="turma-mod-label">–</div>
+    <button class="btn btn-primary" id="btn-add-res" onclick="abrirModalAddRes()">+ Adicionar Residente</button>
+  </div>
+
+  <div class="card" style="padding-top:12px;padding-bottom:8px">
+    <div id="turma-list"></div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TELA: AVALIAÇÃO DO PRECEPTOR -->
+<!-- ============================================================ -->
+<div id="screen-avaliacao" class="screen">
+  <div class="sec-hdr verde">
+    <h2>📋 Avaliação do Preceptor</h2>
+    <p>Avaliação periódica do residente</p>
   </div>
 
   <div class="card">
     <div class="card-title">Identificação <span class="badge">Obrigatório</span></div>
-    <div class="form-group">
+    <div class="fg">
       <label>Nome do Residente</label>
       <input type="text" id="av-residente" placeholder="Ex: João Silva" list="residentes-list">
       <datalist id="residentes-list"></datalist>
     </div>
-    <div class="flex-row">
-      <div class="form-group">
-        <label>Ano de Residência</label>
+    <div class="fr">
+      <div class="fg">
+        <label>Ano</label>
         <select id="av-ano">
           <option value="">Selecione</option>
           <option value="R1">R1</option>
@@ -503,23 +428,25 @@ textarea { resize: none; height: 80px; }
           <option value="R3">R3</option>
         </select>
       </div>
-      <div class="form-group">
+      <div class="fg">
         <label>Período</label>
         <select id="av-periodo">
           <option value="">Selecione</option>
-          <option value="1º Trimestre">1º Trimestre</option>
-          <option value="2º Trimestre">2º Trimestre</option>
-          <option value="3º Trimestre">3º Trimestre</option>
-          <option value="4º Trimestre">4º Trimestre</option>
+          <option value="1º Módulo">1º Módulo</option>
+          <option value="2º Módulo">2º Módulo</option>
+          <option value="3º Módulo">3º Módulo</option>
+          <option value="4º Módulo">4º Módulo</option>
+          <option value="5º Módulo">5º Módulo</option>
+          <option value="6º Módulo">6º Módulo</option>
         </select>
       </div>
     </div>
-    <div class="flex-row">
-      <div class="form-group">
-        <label>Setor / Rodízio</label>
-        <input type="text" id="av-setor" placeholder="Ex: Emergência">
+    <div class="fr">
+      <div class="fg">
+        <label>Módulo / Rodízio</label>
+        <input type="text" id="av-setor" placeholder="Ex: UTI Pediátrica">
       </div>
-      <div class="form-group">
+      <div class="fg">
         <label>Data</label>
         <input type="date" id="av-data">
       </div>
@@ -528,9 +455,9 @@ textarea { resize: none; height: 80px; }
 
   <!-- DOMÍNIO: CONHECIMENTOS -->
   <div class="card">
-    <div class="dominio-header">
-      <span class="dominio-nome">📘 Conhecimentos</span>
-      <span class="dominio-media" id="media-conhecimentos">–</span>
+    <div class="dom-hdr-lbl">
+      <span class="dom-nome">📘 Conhecimentos</span>
+      <span class="dom-media" id="media-conhecimentos">–</span>
     </div>
     <div class="score-item">
       <div class="score-label">Apreendeu os pressupostos teóricos relacionados à prática profissional</div>
@@ -543,9 +470,9 @@ textarea { resize: none; height: 80px; }
 
   <!-- DOMÍNIO: HABILIDADES -->
   <div class="card">
-    <div class="dominio-header">
-      <span class="dominio-nome">🔬 Habilidades</span>
-      <span class="dominio-media" id="media-habilidades">–</span>
+    <div class="dom-hdr-lbl">
+      <span class="dom-nome">🔬 Habilidades</span>
+      <span class="dom-media" id="media-habilidades">–</span>
     </div>
     <div class="score-item">
       <div class="score-label">Realizou com segurança procedimentos de prevenção, diagnóstico e tratamento nas práticas clínicas e/ou cirúrgicas</div>
@@ -558,9 +485,9 @@ textarea { resize: none; height: 80px; }
 
   <!-- DOMÍNIO: ATITUDES -->
   <div class="card">
-    <div class="dominio-header">
-      <span class="dominio-nome">🤝 Atitudes</span>
-      <span class="dominio-media" id="media-atitudes">–</span>
+    <div class="dom-hdr-lbl">
+      <span class="dom-nome">🤝 Atitudes</span>
+      <span class="dom-media" id="media-atitudes">–</span>
     </div>
     <div class="score-item">
       <div class="score-label">Foi pontual, assíduo e cumpriu o horário destinado às atividades da residência</div>
@@ -613,98 +540,44 @@ textarea { resize: none; height: 80px; }
     </div>
   </div>
 
-  <!-- RESULTADO FINAL -->
+  <!-- RESULTADO -->
   <div class="card">
-    <div class="card-title">📊 Resultado Final do Rodízio</div>
-    <div id="resultado-final">
-      <div class="conceito-box">
-        <div>
-          <div class="conceito-label">Média Final</div>
-          <div class="conceito-valor" id="media-final">–</div>
-        </div>
-        <div class="conceito-texto" id="conceito-texto">–</div>
+    <div class="card-title">📊 Resultado Final</div>
+    <div class="conceito-box">
+      <div>
+        <div class="conceito-label">Média Final</div>
+        <div class="conceito-valor" id="media-final">–</div>
       </div>
+      <div class="conceito-texto" id="conceito-texto">–</div>
     </div>
     <div class="divider"></div>
-    <div class="form-group">
+    <div class="fg">
       <label>Observações do Preceptor</label>
       <textarea id="av-obs" placeholder="Comentários, pontos de atenção, sugestões de melhoria..."></textarea>
     </div>
     <button class="btn btn-primary" onclick="salvarAvaliacao()">✓ Salvar Avaliação</button>
-    <button class="btn btn-secondary" onclick="limparAvaliacao()">↺ Limpar Formulário</button>
+    <button class="btn btn-secondary" onclick="limparAvaliacao()">↺ Limpar</button>
   </div>
 </div>
 
 <!-- ============================================================ -->
-<!-- ABA 2: FREQUÊNCIA DIÁRIA -->
-<!-- ============================================================ -->
-<div id="screen-frequencia" class="screen">
-  <div class="section-header turquesa">
-    <h2>📅 Frequência Diária</h2>
-    <p>Registro de presença dos residentes</p>
-  </div>
-
-  <div class="card">
-    <div class="card-title">Configuração do Registro</div>
-    <div class="flex-row">
-      <div class="form-group">
-        <label>Data</label>
-        <input type="date" id="freq-data">
-      </div>
-      <div class="form-group">
-        <label>Setor</label>
-        <input type="text" id="freq-setor" placeholder="Ex: UTI Pediátrica">
-      </div>
-    </div>
-    <div class="form-group">
-      <label>Adicionar Residente</label>
-      <div class="flex-row">
-        <input type="text" id="freq-nome" placeholder="Nome do residente">
-        <button class="btn btn-secondary" style="flex:0;padding:11px 14px" onclick="addFreqResidente()">+</button>
-      </div>
-    </div>
-  </div>
-
-  <div id="freq-lista" class="card">
-    <div class="card-title">Presença do Dia</div>
-    <div id="freq-residentes-container">
-      <div class="empty-state">
-        <div class="icon">👥</div>
-        <p>Adicione residentes para registrar a frequência</p>
-      </div>
-    </div>
-    <div class="divider"></div>
-    <div id="freq-resumo" style="font-size:12px; color:var(--cinza-escuro); text-align:center; padding:4px 0;"></div>
-    <button class="btn btn-primary" onclick="salvarFrequencia()" style="margin-top:12px">✓ Salvar Frequência</button>
-  </div>
-
-  <div class="card">
-    <div class="card-title">📊 Consolidado de Frequência</div>
-    <div id="freq-consolidado">
-      <div class="text-muted" style="text-align:center; padding:16px 0;">Salve registros para ver o consolidado</div>
-    </div>
-  </div>
-</div>
-
-<!-- ============================================================ -->
-<!-- ABA 3: HISTÓRICO E SÍNTESE -->
+<!-- TELA: HISTÓRICO -->
 <!-- ============================================================ -->
 <div id="screen-historico" class="screen">
-  <div class="section-header azul">
-    <h2>📊 Histórico e Síntese</h2>
+  <div class="sec-hdr azul">
+    <h2>📊 Histórico</h2>
     <p>Todas as avaliações registradas</p>
   </div>
-
   <div class="card">
     <div class="card-title">Filtros</div>
-    <div class="flex-row">
-      <div class="form-group">
+    <div class="fr">
+      <div class="fg">
         <label>Residente</label>
-        <input type="text" id="hist-filtro-nome" placeholder="Filtrar por nome" oninput="renderHistorico()">
+        <input type="text" id="hist-nome" placeholder="Filtrar por nome" oninput="renderHistorico()">
       </div>
-      <div class="form-group">
+      <div class="fg">
         <label>Ano</label>
-        <select id="hist-filtro-ano" onchange="renderHistorico()">
+        <select id="hist-ano" onchange="renderHistorico()">
           <option value="">Todos</option>
           <option value="R1">R1</option>
           <option value="R2">R2</option>
@@ -713,131 +586,97 @@ textarea { resize: none; height: 80px; }
       </div>
     </div>
   </div>
-
   <div class="card" style="padding-bottom:8px">
     <div id="historico-container"></div>
   </div>
 </div>
 
 <!-- ============================================================ -->
-<!-- ABA 4: GUIA DE FEEDBACK -->
+<!-- TELA: GUIA DE FEEDBACK -->
 <!-- ============================================================ -->
 <div id="screen-feedback" class="screen">
-  <div class="section-header amarelo">
+  <div class="sec-hdr amarelo">
     <h2>💬 Guia de Feedback</h2>
     <p>Boas práticas de feedback clínico</p>
   </div>
-
   <div class="card">
-    <div class="alert-box info">
-      <span>💡</span>
-      <span>O feedback eficaz é um pilar do desenvolvimento do médico residente. Use este guia como referência antes e depois das avaliações.</span>
-    </div>
+    <div class="alert info"><span>💡</span><span>O feedback eficaz é um pilar do desenvolvimento do médico residente. Use este guia como referência antes e depois das avaliações.</span></div>
   </div>
-
   <div style="padding:0 12px">
-    <div class="feedback-card" id="fb1">
-      <div class="feedback-card-header" onclick="toggleFeedback('fb1')">
-        <div class="feedback-card-icon" style="background:rgba(0,107,63,0.1)">🎯</div>
-        <div class="feedback-card-title">O que é feedback eficaz?</div>
-        <div class="feedback-card-toggle">▼</div>
+    <div class="fb-card" id="fb1">
+      <div class="fb-card-hdr" onclick="toggleFb('fb1')">
+        <div class="fb-card-icon" style="background:rgba(0,107,63,.1)">🎯</div>
+        <div class="fb-card-title">O que é feedback eficaz?</div>
+        <div class="fb-card-tog">▼</div>
       </div>
-      <div class="feedback-card-body">
+      <div class="fb-card-body">
         <p>Feedback eficaz é uma <strong>comunicação intencional e estruturada</strong> que descreve comportamentos observáveis, compara com um padrão esperado e orienta a melhoria.</p>
-        <p>Diferente de uma crítica, o feedback clínico é baseado em <strong>evidências observadas</strong>, é dado em momento oportuno e considera o impacto no paciente e na equipe.</p>
-        <div class="feedback-tip">
-          ✅ <strong>Princípio chave:</strong> Descreva o que você viu, não o que você acha sobre a pessoa.
-        </div>
+        <p>Diferente de uma crítica, o feedback clínico é baseado em <strong>evidências observadas</strong>, dado em momento oportuno e considera o impacto no paciente e na equipe.</p>
+        <div class="fb-tip">✅ <strong>Princípio chave:</strong> Descreva o que você viu, não o que você acha sobre a pessoa.</div>
       </div>
     </div>
-
-    <div class="feedback-card" id="fb2">
-      <div class="feedback-card-header" onclick="toggleFeedback('fb2')">
-        <div class="feedback-card-icon" style="background:rgba(0,74,124,0.1)">📐</div>
-        <div class="feedback-card-title">Método SBI (Situação–Comportamento–Impacto)</div>
-        <div class="feedback-card-toggle">▼</div>
+    <div class="fb-card" id="fb2">
+      <div class="fb-card-hdr" onclick="toggleFb('fb2')">
+        <div class="fb-card-icon" style="background:rgba(0,74,124,.1)">📐</div>
+        <div class="fb-card-title">Método SBI (Situação–Comportamento–Impacto)</div>
+        <div class="fb-card-tog">▼</div>
       </div>
-      <div class="feedback-card-body">
+      <div class="fb-card-body">
         <p><strong>S – Situação:</strong> Descreva o contexto específico onde o comportamento ocorreu.</p>
         <p><strong>B – Behavior (Comportamento):</strong> Descreva o comportamento observado, de forma objetiva e sem julgamento.</p>
         <p><strong>I – Impacto:</strong> Explique o efeito daquele comportamento no paciente, na equipe ou no processo.</p>
-        <div class="feedback-tip">
-          💬 <strong>Exemplo:</strong> "Na visita de ontem (S), quando você explicou o diagnóstico sem adaptar a linguagem à família (B), percebi que a mãe ficou confusa e ansiosa (I)."
-        </div>
+        <div class="fb-tip">💬 <strong>Exemplo:</strong> "Na visita de ontem (S), quando você explicou o diagnóstico sem adaptar a linguagem à família (B), percebi que a mãe ficou confusa e ansiosa (I)."</div>
       </div>
     </div>
-
-    <div class="feedback-card" id="fb3">
-      <div class="feedback-card-header" onclick="toggleFeedback('fb3')">
-        <div class="feedback-card-icon" style="background:rgba(0,180,200,0.1)">⏰</div>
-        <div class="feedback-card-title">Momento e Contexto Ideal</div>
-        <div class="feedback-card-toggle">▼</div>
+    <div class="fb-card" id="fb3">
+      <div class="fb-card-hdr" onclick="toggleFb('fb3')">
+        <div class="fb-card-icon" style="background:rgba(0,180,200,.1)">⏰</div>
+        <div class="fb-card-title">Momento e Contexto Ideal</div>
+        <div class="fb-card-tog">▼</div>
       </div>
-      <div class="feedback-card-body">
+      <div class="fb-card-body">
         <p>O feedback mais eficaz é dado <strong>logo após a observação</strong>, em ambiente privado, quando o residente está receptivo.</p>
         <p><strong>Evite:</strong> dar feedback em momentos de estresse agudo, na frente de pacientes, ou acumulando muitas observações de uma vez.</p>
-        <div class="feedback-tip">
-          📅 <strong>Dica:</strong> Marque uma sessão de feedback de 10 minutos ao final do plantão, como parte da rotina.
-        </div>
+        <div class="fb-tip">📅 <strong>Dica:</strong> Marque uma sessão de feedback de 10 minutos ao final do plantão, como parte da rotina.</div>
       </div>
     </div>
-
-    <div class="feedback-card" id="fb4">
-      <div class="feedback-card-header" onclick="toggleFeedback('fb4')">
-        <div class="feedback-card-icon" style="background:rgba(245,166,35,0.12)">🔄</div>
-        <div class="feedback-card-title">Feedback Formativo vs. Somativo</div>
-        <div class="feedback-card-toggle">▼</div>
+    <div class="fb-card" id="fb4">
+      <div class="fb-card-hdr" onclick="toggleFb('fb4')">
+        <div class="fb-card-icon" style="background:rgba(245,166,35,.12)">🔄</div>
+        <div class="fb-card-title">Feedback Formativo vs. Somativo</div>
+        <div class="fb-card-tog">▼</div>
       </div>
-      <div class="feedback-card-body">
-        <p><strong>Formativo:</strong> Contínuo, ao longo do processo de aprendizagem. Objetivo é identificar potências e dificuldades e propor melhorias. O residente é ativo no processo.</p>
-        <p><strong>Somativo:</strong> Realizado ao final do período (trimestre/ano). Orientado para progressão e certificação. Baseado nas médias das avaliações acumuladas.</p>
-        <div class="feedback-tip">
-          ⚖️ O ideal é integrar os dois tipos: feedback formativo frequente que informa e prepara o feedback somativo.
-        </div>
+      <div class="fb-card-body">
+        <p><strong>Formativo:</strong> Contínuo, ao longo do processo de aprendizagem. Objetivo é identificar potências e dificuldades e propor melhorias.</p>
+        <p><strong>Somativo:</strong> Realizado ao final do módulo. Orientado para progressão e certificação. Baseado nas avaliações acumuladas.</p>
+        <div class="fb-tip">⚖️ O ideal é integrar os dois tipos: feedback formativo frequente que informa e prepara o feedback somativo.</div>
       </div>
     </div>
-
-    <div class="feedback-card" id="fb5">
-      <div class="feedback-card-header" onclick="toggleFeedback('fb5')">
-        <div class="feedback-card-icon" style="background:rgba(208,2,27,0.08)">⚠️</div>
-        <div class="feedback-card-title">Erros Comuns a Evitar</div>
-        <div class="feedback-card-toggle">▼</div>
+    <div class="fb-card" id="fb5">
+      <div class="fb-card-hdr" onclick="toggleFb('fb5')">
+        <div class="fb-card-icon" style="background:rgba(208,2,27,.08)">⚠️</div>
+        <div class="fb-card-title">Erros Comuns a Evitar</div>
+        <div class="fb-card-tog">▼</div>
       </div>
-      <div class="feedback-card-body">
+      <div class="fb-card-body">
         <p>❌ <strong>Efeito halo:</strong> Avaliar tudo com base em uma impressão geral positiva ou negativa.</p>
-        <p>❌ <strong>Feedback sanduíche excessivo:</strong> Elogios forçados que diluem a mensagem essencial.</p>
         <p>❌ <strong>Vaguidade:</strong> "Poderia melhorar" sem especificar o quê e como.</p>
         <p>❌ <strong>Personalização:</strong> "Você é desorganizado" em vez de "Sua prescrição estava incompleta".</p>
-        <div class="feedback-tip">
-          ✅ <strong>Lembre:</strong> Feedback é sobre comportamentos, não sobre a pessoa.
-        </div>
+        <div class="fb-tip">✅ <strong>Lembre:</strong> Feedback é sobre comportamentos, não sobre a pessoa.</div>
       </div>
     </div>
-
-    <div class="feedback-card" id="fb6">
-      <div class="feedback-card-header" onclick="toggleFeedback('fb6')">
-        <div class="feedback-card-icon" style="background:rgba(0,107,63,0.08)">📈</div>
-        <div class="feedback-card-title">Escala de Desempenho (Conceitos)</div>
-        <div class="feedback-card-toggle">▼</div>
+    <div class="fb-card" id="fb6">
+      <div class="fb-card-hdr" onclick="toggleFb('fb6')">
+        <div class="fb-card-icon" style="background:rgba(0,107,63,.08)">📈</div>
+        <div class="fb-card-title">Escala de Desempenho (0–10)</div>
+        <div class="fb-card-tog">▼</div>
       </div>
-      <div class="feedback-card-body">
-        <div style="display:grid; gap:8px;">
-          <div style="display:flex; align-items:center; gap:10px; padding:8px; background:rgba(208,2,27,0.08); border-radius:8px;">
-            <span style="font-size:18px; font-weight:800; color:var(--vermelho); min-width:40px;">0–4,9</span>
-            <div><strong style="color:var(--vermelho)">Insatisfatório</strong><br><span style="font-size:11px; color:var(--cinza-escuro)">Requer intervenção imediata e plano de recuperação</span></div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; padding:8px; background:rgba(245,166,35,0.1); border-radius:8px;">
-            <span style="font-size:18px; font-weight:800; color:#B06A00; min-width:40px;">5–6,9</span>
-            <div><strong style="color:#B06A00">Regular</strong><br><span style="font-size:11px; color:var(--cinza-escuro)">Atende parcialmente; monitorar de perto</span></div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; padding:8px; background:rgba(0,114,188,0.08); border-radius:8px;">
-            <span style="font-size:18px; font-weight:800; color:var(--azul-claro); min-width:40px;">7–8,9</span>
-            <div><strong style="color:var(--azul-claro)">Bom</strong><br><span style="font-size:11px; color:var(--cinza-escuro)">Desempenho dentro do esperado</span></div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px; padding:8px; background:rgba(0,107,63,0.08); border-radius:8px;">
-            <span style="font-size:18px; font-weight:800; color:var(--verde); min-width:40px;">9–10</span>
-            <div><strong style="color:var(--verde)">Ótimo</strong><br><span style="font-size:11px; color:var(--cinza-escuro)">Supera as expectativas</span></div>
-          </div>
+      <div class="fb-card-body">
+        <div style="display:grid;gap:8px">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:rgba(208,2,27,.08);border-radius:8px"><span style="font-size:18px;font-weight:800;color:var(--vermelho);min-width:40px">0–4,9</span><div><strong style="color:var(--vermelho)">Insatisfatório</strong><br><span style="font-size:11px;color:var(--cinza-e)">Requer intervenção imediata e plano de recuperação</span></div></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:rgba(245,166,35,.1);border-radius:8px"><span style="font-size:18px;font-weight:800;color:#B06A00;min-width:40px">5–6,9</span><div><strong style="color:#B06A00">Regular</strong><br><span style="font-size:11px;color:var(--cinza-e)">Atende parcialmente; monitorar de perto</span></div></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:rgba(0,114,188,.08);border-radius:8px"><span style="font-size:18px;font-weight:800;color:var(--azul-c);min-width:40px">7–8,9</span><div><strong style="color:var(--azul-c)">Bom</strong><br><span style="font-size:11px;color:var(--cinza-e)">Desempenho dentro do esperado</span></div></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px;background:rgba(0,107,63,.08);border-radius:8px"><span style="font-size:18px;font-weight:800;color:var(--verde);min-width:40px">9–10</span><div><strong style="color:var(--verde)">Ótimo</strong><br><span style="font-size:11px;color:var(--cinza-e)">Supera as expectativas</span></div></div>
         </div>
       </div>
     </div>
@@ -845,127 +684,210 @@ textarea { resize: none; height: 80px; }
 </div>
 
 <!-- ============================================================ -->
-<!-- ABA 5: AUTOAVALIAÇÃO DO RESIDENTE -->
+<!-- TELA: AUTOAVALIAÇÃO -->
 <!-- ============================================================ -->
 <div id="screen-autoaval" class="screen">
-  <div class="section-header" style="background: linear-gradient(135deg, #4A1472 0%, #7B2FBE 100%);">
+  <div class="sec-hdr roxo">
     <h2>🔍 Autoavaliação</h2>
-    <p>Competências oficiais CNRM/SBP por ano de residência</p>
+    <p>Competências CNRM/SBP por ano de residência</p>
   </div>
-
   <div class="card">
     <div class="card-title">Identificação</div>
-    <div class="form-group">
-      <label>Seu Nome</label>
-      <input type="text" id="auto-nome" placeholder="Nome completo">
+    <div class="fg">
+      <label>Nome do Residente</label>
+      <input type="text" id="auto-nome" placeholder="Nome completo" list="residentes-list">
     </div>
-    <div class="form-group">
+    <div class="fg">
       <label>Ano de Residência</label>
-      <div class="ano-selector" id="auto-ano-selector">
-        <button class="ano-btn sel" onclick="selectAno('R1',this)">R1</button>
-        <button class="ano-btn" onclick="selectAno('R2',this)">R2</button>
-        <button class="ano-btn" onclick="selectAno('R3',this)">R3</button>
+      <div class="ano-sel" id="auto-ano-sel">
+        <button class="ano-btn sel" onclick="selectAutoAno('R1',this)">R1</button>
+        <button class="ano-btn" onclick="selectAutoAno('R2',this)">R2</button>
+        <button class="ano-btn" onclick="selectAutoAno('R3',this)">R3</button>
       </div>
     </div>
-    <div class="form-group">
-      <label>Período de Referência</label>
+    <div class="fg">
+      <label>Módulo de Referência</label>
       <select id="auto-periodo">
-        <option value="1º Trimestre">1º Trimestre</option>
-        <option value="2º Trimestre">2º Trimestre</option>
-        <option value="3º Trimestre">3º Trimestre</option>
-        <option value="4º Trimestre">4º Trimestre</option>
+        <option value="1º Módulo">1º Módulo</option>
+        <option value="2º Módulo">2º Módulo</option>
+        <option value="3º Módulo">3º Módulo</option>
+        <option value="4º Módulo">4º Módulo</option>
+        <option value="5º Módulo">5º Módulo</option>
+        <option value="6º Módulo">6º Módulo</option>
       </select>
     </div>
-    <div class="alert-box info">
-      <span>ℹ️</span>
-      <span>Avalie seu desempenho em cada competência honestamente. 1=Não atingi, 2=Parcialmente, 3=Em desenvolvimento, 4=Atingi plenamente.</span>
-    </div>
+    <div class="alert info"><span>ℹ️</span><span>1=Não atingi · 2=Parcialmente · 3=Em desenvolvimento · 4=Atingi plenamente</span></div>
   </div>
-
-  <div class="card" id="auto-competencias-card">
+  <div class="card">
     <div class="card-title" id="auto-comp-titulo">Competências R1 – CNRM/SBP</div>
     <div id="auto-competencias-container"></div>
   </div>
-
   <div class="card">
-    <div class="form-group">
+    <div class="fg">
       <label>Reflexão Escrita</label>
-      <textarea id="auto-reflexao" placeholder="Descreva seus principais aprendizados, desafios enfrentados e metas para o próximo período..." style="height:100px"></textarea>
+      <textarea id="auto-reflexao" placeholder="Aprendizados, desafios e metas para o próximo módulo..." style="height:100px"></textarea>
     </div>
-    <button class="btn btn-primary" style="background: linear-gradient(135deg, #4A1472 0%, #7B2FBE 100%); box-shadow: 0 4px 12px rgba(74,20,114,0.35);" onclick="salvarAutoaval()">✓ Salvar Autoavaliação</button>
+    <button class="btn btn-roxo" onclick="salvarAutoaval()">✓ Salvar Autoavaliação</button>
   </div>
 </div>
 
 <!-- ============================================================ -->
-<!-- ABA 6: DASHBOARD DA COORDENAÇÃO -->
+<!-- TELA: DASHBOARD -->
 <!-- ============================================================ -->
 <div id="screen-dashboard" class="screen">
-  <div class="section-header" style="background: linear-gradient(135deg, #1A2535 0%, #2C3E55 100%);">
+  <div class="sec-hdr escuro">
     <h2>📈 Dashboard</h2>
-    <p>Coordenação – visão consolidada do programa</p>
+    <p>Visão consolidada do programa</p>
   </div>
-
   <div class="card">
     <div class="card-title">Indicadores Gerais</div>
-    <div class="dash-stat-grid" id="dash-stats"></div>
+    <div class="dash-grid" id="dash-stats"></div>
   </div>
-
   <div class="card">
-    <div class="card-title">Ranking de Residentes</div>
+    <div class="card-title">Frequência por Ano (módulo atual)</div>
+    <div id="dash-freq"></div>
+  </div>
+  <div class="card">
+    <div class="card-title">Ranking de Avaliações</div>
     <div id="dash-ranking"></div>
   </div>
-
   <div class="card">
     <div class="card-title">Desempenho por Domínio</div>
     <div id="dash-dominios"></div>
   </div>
-
   <div class="card">
     <div class="card-title">⚠️ Residentes em Atenção</div>
     <div id="dash-alertas"></div>
   </div>
-
-  <div style="padding: 12px;">
+  <div style="padding:12px">
     <button class="btn btn-danger" onclick="limparTodosDados()">🗑️ Limpar Todos os Dados</button>
   </div>
 </div>
 
-<!-- BANNER: INSTALAR APP -->
-<div id="install-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:8500;
-  background:white; border-top:1px solid #E1E6EB; padding:14px 16px;
-  align-items:center; gap:12px; max-width:480px; margin:0 auto;
-  box-shadow:0 -4px 20px rgba(0,0,0,0.1);">
-  <div style="flex:1">
-    <div style="font-size:13px; font-weight:700; color:#1A2535">&#128242; Instalar ResidPed UEA</div>
-    <div style="font-size:11px; color:#6B7785; margin-top:2px">Use offline, direto da tela inicial</div>
+<!-- ============================================================ -->
+<!-- TELA: CONFIG -->
+<!-- ============================================================ -->
+<div id="screen-config" class="screen">
+  <div class="sec-hdr escuro">
+    <h2>⚙️ Configuração</h2>
+    <p>Programa, módulos e sincronização</p>
   </div>
-  <button onclick="hideInstallBanner()" style="background:none;border:none;font-size:18px;color:#6B7785;cursor:pointer;padding:4px;">&#x2715;</button>
-  <button onclick="installApp()" style="background:#006B3F;color:white;border:none;border-radius:8px;
-    padding:10px 16px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;">
-    Instalar
-  </button>
+
+  <div class="card">
+    <div class="card-title">👨‍⚕️ Preceptor</div>
+    <div class="fg">
+      <label>Nome do Preceptor</label>
+      <input type="text" id="cfg-preceptor" placeholder="Nome completo" oninput="saveConfig()">
+    </div>
+  </div>
+
+  <!-- R1 -->
+  <div class="card">
+    <div class="card-title"><span style="background:rgba(0,74,124,.12);color:var(--azul);padding:2px 12px;border-radius:20px;font-size:12px;font-weight:800">R1</span> &nbsp;Módulo atual do R1</div>
+    <div class="fg">
+      <label>Nome do Módulo</label>
+      <input type="text" id="cfg-R1-mod" placeholder="Ex: Ambulatório Pediátrico" oninput="saveConfig()">
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Início</label><input type="date" id="cfg-R1-ini" onchange="saveConfig();recalcFim('R1')"></div>
+      <div class="fg"><label>Término</label><input type="date" id="cfg-R1-fim" onchange="saveConfig()"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>🌅 Cenário Manhã</label><input type="text" id="cfg-R1-m" placeholder="Ex: Ambulatório" oninput="saveConfig()"></div>
+      <div class="fg"><label>🌆 Cenário Tarde</label><input type="text" id="cfg-R1-t" placeholder="Ex: Enfermaria" oninput="saveConfig()"></div>
+    </div>
+  </div>
+
+  <!-- R2 -->
+  <div class="card">
+    <div class="card-title"><span style="background:rgba(107,47,160,.12);color:var(--roxo);padding:2px 12px;border-radius:20px;font-size:12px;font-weight:800">R2</span> &nbsp;Módulo atual do R2</div>
+    <div class="fg">
+      <label>Nome do Módulo</label>
+      <input type="text" id="cfg-R2-mod" placeholder="Ex: Enfermaria Pediátrica" oninput="saveConfig()">
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Início</label><input type="date" id="cfg-R2-ini" onchange="saveConfig();recalcFim('R2')"></div>
+      <div class="fg"><label>Término</label><input type="date" id="cfg-R2-fim" onchange="saveConfig()"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>🌅 Cenário Manhã</label><input type="text" id="cfg-R2-m" placeholder="Ex: UTI" oninput="saveConfig()"></div>
+      <div class="fg"><label>🌆 Cenário Tarde</label><input type="text" id="cfg-R2-t" placeholder="Ex: Neonatologia" oninput="saveConfig()"></div>
+    </div>
+  </div>
+
+  <!-- R3 -->
+  <div class="card">
+    <div class="card-title"><span style="background:rgba(0,107,63,.12);color:var(--verde);padding:2px 12px;border-radius:20px;font-size:12px;font-weight:800">R3</span> &nbsp;Módulo atual do R3</div>
+    <div class="fg">
+      <label>Nome do Módulo</label>
+      <input type="text" id="cfg-R3-mod" placeholder="Ex: UTI Pediátrica" oninput="saveConfig()">
+    </div>
+    <div class="fr">
+      <div class="fg"><label>Início</label><input type="date" id="cfg-R3-ini" onchange="saveConfig();recalcFim('R3')"></div>
+      <div class="fg"><label>Término</label><input type="date" id="cfg-R3-fim" onchange="saveConfig()"></div>
+    </div>
+    <div class="fr">
+      <div class="fg"><label>🌅 Cenário Manhã</label><input type="text" id="cfg-R3-m" placeholder="Ex: Emergência" oninput="saveConfig()"></div>
+      <div class="fg"><label>🌆 Cenário Tarde</label><input type="text" id="cfg-R3-t" placeholder="Ex: Ambulatório" oninput="saveConfig()"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">☁️ Sincronização Google Sheets</div>
+    <div class="alert info"><span>ℹ️</span><span>Configure a URL do Apps Script para sincronizar avaliações e frequência automaticamente.</span></div>
+    <button class="btn btn-secondary" onclick="abrirModalSync()">⚙️ Configurar Google Sheets</button>
+  </div>
 </div>
 
-<!-- BANNER: ATUALIZAÇÃO DISPONÍVEL -->
-<div id="update-banner" style="display:none; position:fixed; top:0; left:0; right:0; z-index:8500;
-  background:#004A7C; padding:12px 16px;
-  align-items:center; gap:10px; max-width:480px; margin:0 auto;">
-  <div style="flex:1; font-size:12px; font-weight:600; color:white;">&#128260; Nova versão disponível</div>
-  <button onclick="applyUpdate()" style="background:white;color:#004A7C;border:none;border-radius:6px;
-    padding:7px 12px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;cursor:pointer;">
-    Atualizar
-  </button>
+<!-- MODAL: ADD RESIDENTE -->
+<div class="modal-ov" id="modal-add-res">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modal-add-res-title">+ Adicionar Residente</div>
+    <div class="fg">
+      <label>Nome Completo</label>
+      <input type="text" id="add-res-nome" placeholder="Nome do residente">
+    </div>
+    <button class="btn btn-primary" onclick="adicionarResidente()">✓ Adicionar</button>
+    <button class="btn btn-secondary" onclick="fecharModal('modal-add-res')" style="margin-top:8px">Cancelar</button>
+  </div>
 </div>
 
-<!-- TOAST -->
+<!-- MODAL: SYNC -->
+<div class="modal-ov" id="modal-sync">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title">⚙️ Google Sheets</div>
+    <div style="font-size:12px;color:var(--cinza-e);margin-bottom:14px;line-height:1.6">
+      Cole a URL do Web App do Google Apps Script (Code.gs publicado).<br>
+      <strong>Implantar → App da Web → Qualquer pessoa.</strong>
+    </div>
+    <div class="fg">
+      <label>URL do Web App</label>
+      <input type="text" id="input-sync-url" placeholder="https://script.google.com/macros/s/...">
+    </div>
+    <button class="btn btn-primary" onclick="salvarConfigSync()">✓ Salvar e Testar</button>
+    <button class="btn btn-secondary" onclick="fecharModal('modal-sync')" style="margin-top:8px">Cancelar</button>
+  </div>
+</div>
+
+<!-- INSTALL/UPDATE BANNERS -->
+<div id="install-banner">
+  <div style="flex:1"><div style="font-size:13px;font-weight:700">📱 Instalar ResidPed UEA</div><div style="font-size:11px;color:var(--cinza-e);margin-top:2px">Acesso offline, tela inicial</div></div>
+  <button onclick="document.getElementById('install-banner').style.display='none'" style="background:none;border:none;font-size:18px;color:var(--cinza-e);cursor:pointer">✕</button>
+  <button onclick="installApp()" style="background:var(--verde);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer">Instalar</button>
+</div>
+<div id="update-banner">
+  <div style="flex:1;font-size:12px;font-weight:600;color:#fff">🔄 Nova versão disponível</div>
+  <button onclick="applyUpdate()" style="background:#fff;color:var(--azul);border:none;border-radius:6px;padding:7px 12px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer">Atualizar</button>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 // ============================================================
-// DATA
+// COMPETÊNCIAS CNRM/SBP
 // ============================================================
-let currentAnoAuto = 'R1';
-
 const COMPETENCIAS = {
   R1: [
     "Integrar conhecimentos básicos e clínicos para avaliar crescimento e desenvolvimento na infância",
@@ -1008,41 +930,307 @@ const COMPETENCIAS = {
 };
 
 // ============================================================
-// STORAGE HELPERS
+// STATE — APP (residentes + módulos)
 // ============================================================
-function load(key) {
-  try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
+const KEY = 'residped_v3';
+let APP = {
+  preceptorName: '',
+  programas: {
+    R1: { moduloName:'', startDate:'', endDate:'', morning:'Manhã', afternoon:'Tarde' },
+    R2: { moduloName:'', startDate:'', endDate:'', morning:'Manhã', afternoon:'Tarde' },
+    R3: { moduloName:'', startDate:'', endDate:'', morning:'Manhã', afternoon:'Tarde' }
+  },
+  residentes: { R1:{}, R2:{}, R3:{} }
+};
+
+// Legacy keys (avaliacoes, autoavaliacoes)
+function loadArr(key) { try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; } }
+function saveArr(key, data) { try { localStorage.setItem(key, JSON.stringify(data)); } catch(e){} }
+function saveApp() { try { localStorage.setItem(KEY, JSON.stringify(APP)); } catch(e){} }
+function loadApp() { try { const d=JSON.parse(localStorage.getItem(KEY)); if(d) APP=d; } catch(e){} }
+
+// Current state
+let currentDay = null;
+let homeYear = 'R1';
+let turmaYear = 'R1';
+let currentAnoAuto = 'R1';
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+// ============================================================
+// DATE UTILS
+// ============================================================
+const WD = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const MO = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+function isoToday() { return new Date().toISOString().split('T')[0]; }
+function fmtDate(d) { const dt=new Date(d+'T12:00:00'); return WD[dt.getDay()]+' '+dt.getDate()+' '+MO[dt.getMonth()]; }
+function fmtDateFull(d) { const dt=new Date(d+'T12:00:00'); return ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'][dt.getDay()]; }
+function fmtBR(d) { return d ? d.split('-').reverse().join('/') : '–'; }
+function addDays(d, n) { const dt=new Date(d+'T12:00:00'); dt.setDate(dt.getDate()+n); return dt.toISOString().split('T')[0]; }
+function addMonths(d, n) { const dt=new Date(d+'T12:00:00'); dt.setMonth(dt.getMonth()+n); return dt.toISOString().split('T')[0]; }
+function getWeekdays(s, e) {
+  const days=[], sd=new Date(s+'T12:00:00'), ed=new Date(e+'T12:00:00'), cur=new Date(sd);
+  while(cur<=ed) { const d=cur.getDay(); if(d!==0&&d!==6) days.push(cur.toISOString().split('T')[0]); cur.setDate(cur.getDate()+1); }
+  return days;
 }
-function save(key, data) {
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) { showToast('Erro ao salvar dados', 'erro'); }
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, tipo='s') {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast '+tipo+' show';
+  setTimeout(()=>t.classList.remove('show'), 3000);
 }
 
 // ============================================================
 // NAV
 // ============================================================
 function showScreen(name, btn) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('screen-' + name).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('screen-'+name).classList.add('active');
   if(btn) btn.classList.add('active');
-  if(name === 'historico') renderHistorico();
-  if(name === 'dashboard') renderDashboard();
-  if(name === 'frequencia') renderConsolidado();
-  if(name === 'autoaval') renderAutoCompetencias();
+  else { const b=document.querySelector(`.tab-btn[data-screen="${name}"]`); if(b) b.classList.add('active'); }
+  if(name==='home') renderHome();
+  if(name==='turma') renderTurma();
+  if(name==='config') restoreConfig();
+  if(name==='historico') renderHistorico();
+  if(name==='dashboard') renderDashboard();
+  if(name==='autoaval') renderAutoCompetencias();
 }
 
 // ============================================================
-// TOAST
+// HOME SCREEN
 // ============================================================
-function showToast(msg, tipo = 'sucesso') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast ' + tipo + ' show';
-  setTimeout(() => { t.classList.remove('show'); }, 3000);
+function renderHome() {
+  if(!currentDay) currentDay=isoToday();
+  renderDayLabel();
+  renderHomeAttTable();
+  renderHomeSummary();
+}
+
+function renderDayLabel() {
+  const el=document.getElementById('home-day-label');
+  if(el) el.textContent=fmtDate(currentDay)+' · '+fmtDateFull(currentDay);
+}
+
+function changeDay(dir) {
+  if(dir===0) currentDay=isoToday();
+  else currentDay=addDays(currentDay, dir);
+  renderHome();
+}
+
+function selectHomeYear(year, btn) {
+  homeYear=year;
+  document.querySelectorAll('#home-year-tabs .ytab').forEach(b=>b.classList.remove('sel'));
+  if(btn) btn.classList.add('sel');
+  else { const b=document.querySelector(`#home-year-tabs .ytab[data-year="${year}"]`); if(b) b.classList.add('sel'); }
+  renderHomeAttTable();
+}
+
+function renderHomeAttTable() {
+  const prog=APP.programas[homeYear]||{};
+  const mn=prog.morning||'Manhã', tn=prog.afternoon||'Tarde';
+  const mod=prog.moduloName||'(módulo não configurado)';
+  const dates=prog.startDate?` · ${fmtBR(prog.startDate)} a ${fmtBR(prog.endDate)}`:'';
+  const ml=document.getElementById('home-mod-label');
+  if(ml) ml.textContent=homeYear+' — '+mod+dates;
+  document.getElementById('home-hdr-sub').textContent=homeYear+': '+mod;
+  const cm=document.getElementById('home-col-m');
+  const ct=document.getElementById('home-col-t');
+  if(cm) cm.textContent='🌅 '+mn;
+  if(ct) ct.textContent='🌆 '+tn;
+  const body=document.getElementById('home-att-body');
+  if(!body) return;
+  const ids=Object.keys(APP.residentes[homeYear]||{});
+  if(!ids.length) {
+    body.innerHTML=`<tr><td colspan="3" style="text-align:center;padding:20px;color:var(--cinza-e);font-size:12px">Nenhum residente em ${homeYear}. Cadastre na aba Residentes.</td></tr>`;
+    return;
+  }
+  body.innerHTML=ids.map(id=>{
+    const r=APP.residentes[homeYear][id];
+    const att=(r.attendance&&r.attendance[currentDay])||{};
+    const mV=att.morning, aV=att.afternoon;
+    const mT=mV==='P'?'✓':mV==='A'?'✕':mV==='T'?'⏱':'○';
+    const aT=aV==='P'?'✓':aV==='A'?'✕':aV==='T'?'⏱':'○';
+    const firstName=r.name.split(' ')[0];
+    return `<tr>
+      <td title="${r.name}"><span style="font-size:12px">${firstName}</span></td>
+      <td><button id="ab-m-${id}" class="att-btn ${mV||''}" onclick="cycleAtt('${homeYear}','${id}','morning')">${mT}</button></td>
+      <td><button id="ab-a-${id}" class="att-btn ${aV||''}" onclick="cycleAtt('${homeYear}','${id}','afternoon')">${aT}</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function cycleAtt(year, id, period) {
+  if(!APP.residentes[year]||!APP.residentes[year][id]) return;
+  if(!APP.residentes[year][id].attendance) APP.residentes[year][id].attendance={};
+  if(!APP.residentes[year][id].attendance[currentDay])
+    APP.residentes[year][id].attendance[currentDay]={morning:null,afternoon:null};
+  const cur=APP.residentes[year][id].attendance[currentDay][period];
+  // cycle: null → P → A → T → null
+  APP.residentes[year][id].attendance[currentDay][period]=
+    cur===null?'P':cur==='P'?'A':cur==='A'?'T':null;
+  saveApp();
+  const v=APP.residentes[year][id].attendance[currentDay][period];
+  const btn=document.getElementById('ab-'+(period==='morning'?'m':'a')+'-'+id);
+  if(btn) {
+    btn.textContent=v==='P'?'✓':v==='A'?'✕':v==='T'?'⏱':'○';
+    btn.className='att-btn '+(v||'');
+  }
+  renderHomeSummary();
+}
+
+function markAllDay(val) {
+  Object.keys(APP.residentes[homeYear]||{}).forEach(id=>{
+    if(!APP.residentes[homeYear][id].attendance) APP.residentes[homeYear][id].attendance={};
+    if(!APP.residentes[homeYear][id].attendance[currentDay])
+      APP.residentes[homeYear][id].attendance[currentDay]={morning:null,afternoon:null};
+    APP.residentes[homeYear][id].attendance[currentDay].morning=val;
+    APP.residentes[homeYear][id].attendance[currentDay].afternoon=val;
+  });
+  saveApp();
+  renderHomeAttTable();
+  renderHomeSummary();
+}
+
+function renderHomeSummary() {
+  const container=document.getElementById('home-summary');
+  if(!container) return;
+  const years=['R1','R2','R3'];
+  const colors={R1:'azul',R2:'roxo',R3:'verde'};
+  container.innerHTML=years.map(yr=>{
+    const ids=Object.keys(APP.residentes[yr]||{});
+    if(!ids.length) return `<div class="stat-box ${colors[yr]}"><div class="sv">0<span style="font-size:12px">/0</span></div><div class="sl">${yr} present.</div></div>`;
+    let pres=0;
+    ids.forEach(id=>{
+      const att=(APP.residentes[yr][id].attendance||{})[currentDay]||{};
+      if(att.morning==='P'||att.afternoon==='P') pres++;
+    });
+    return `<div class="stat-box ${colors[yr]}" style="cursor:pointer" onclick="selectHomeYear('${yr}')">
+      <div class="sv">${pres}<span style="font-size:12px">/${ids.length}</span></div>
+      <div class="sl">${yr} present.</div>
+    </div>`;
+  }).join('');
 }
 
 // ============================================================
-// SCORES
+// TURMA SCREEN
+// ============================================================
+function renderTurma() {
+  updateCounts();
+  renderTurmaList();
+}
+
+function updateCounts() {
+  ['R1','R2','R3'].forEach(yr=>{
+    const cnt=Object.keys(APP.residentes[yr]||{}).length;
+    const el=document.getElementById('cnt-'+yr);
+    if(el) el.textContent='('+cnt+')';
+  });
+}
+
+function selectTurmaYear(year, btn) {
+  turmaYear=year;
+  document.querySelectorAll('#turma-year-tabs .ytab').forEach(b=>b.classList.remove('sel'));
+  if(btn) btn.classList.add('sel');
+  else { const b=document.querySelector(`#turma-year-tabs .ytab[data-year="${year}"]`); if(b) b.classList.add('sel'); }
+  const addBtn=document.getElementById('btn-add-res');
+  if(addBtn) addBtn.style.background=''; // reset
+  renderTurmaList();
+}
+
+function renderTurmaList() {
+  const prog=APP.programas[turmaYear]||{};
+  const mod=prog.moduloName||'(módulo não configurado)';
+  const dates=prog.startDate?` · ${fmtBR(prog.startDate)} a ${fmtBR(prog.endDate)}`:'';
+  const ml=document.getElementById('turma-mod-label');
+  if(ml) ml.textContent=turmaYear+' — '+mod+dates;
+  document.getElementById('modal-add-res-title').textContent='+ Adicionar Residente '+turmaYear;
+
+  const container=document.getElementById('turma-list');
+  if(!container) return;
+  const ids=Object.keys(APP.residentes[turmaYear]||{});
+  if(!ids.length) {
+    container.innerHTML=`<div class="empty"><div class="ei">👥</div><p>Nenhum ${turmaYear} cadastrado.<br>Toque em "+ Adicionar Residente".</p></div>`;
+    return;
+  }
+  const {startDate,endDate}=prog;
+  const days=(startDate&&endDate)?getWeekdays(startDate,endDate):[];
+  const colorMap={R1:'azul',R2:'roxo',R3:'verde'};
+
+  container.innerHTML=ids.map((id,i)=>{
+    const r=APP.residentes[turmaYear][id];
+    const initials=r.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    let mP=0,mR=0,aP=0,aR=0;
+    days.forEach(d=>{
+      const att=(r.attendance||{})[d]||{};
+      if(att.morning==='P'){mP++;mR++;}else if(att.morning==='A'||att.morning==='T')mR++;
+      if(att.afternoon==='P'){aP++;aR++;}else if(att.afternoon==='A'||att.afternoon==='T')aR++;
+    });
+    const total=mR+aR, pres=mP+aP;
+    const pct=total?Math.round(pres/total*100):null;
+    const cls=pct===null?'':pct>=75?'ok':pct>=60?'medio':'baixo';
+    const statCls=pct===null?'':pct>=75?'verde':pct>=60?'amarelo':'vermelho';
+    return `<div class="res-card ${cls}">
+      <div class="res-avatar ${turmaYear}">${initials}</div>
+      <div style="flex:1;min-width:0">
+        <div class="res-name">${i+1}. ${r.name}</div>
+        <div class="mini-stats">
+          <span class="mini-stat ${statCls}">${pct!==null?pct+'% freq':'sem reg.'}</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <button onclick="preencherAvaliacao('${id}','${turmaYear}')" style="background:var(--verde);color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-family:var(--font);font-weight:700;cursor:pointer;white-space:nowrap">📋 Avaliar</button>
+        <button onclick="removerResidente('${turmaYear}','${id}')" style="background:none;border:none;font-size:14px;cursor:pointer;color:var(--cinza-e);padding:2px">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function abrirModalAddRes() {
+  document.getElementById('add-res-nome').value='';
+  document.getElementById('modal-add-res').classList.add('show');
+  setTimeout(()=>document.getElementById('add-res-nome').focus(), 300);
+}
+
+function adicionarResidente() {
+  const nome=document.getElementById('add-res-nome').value.trim();
+  if(!nome) { showToast('Digite o nome do residente','e'); return; }
+  const id=uid();
+  if(!APP.residentes[turmaYear]) APP.residentes[turmaYear]={};
+  APP.residentes[turmaYear][id]={ id, name:nome, attendance:{} };
+  saveApp();
+  fecharModal('modal-add-res');
+  updateCounts();
+  renderTurmaList();
+  updateResidentesList();
+  showToast('✓ '+nome+' adicionado','s');
+}
+
+function removerResidente(year, id) {
+  const r=APP.residentes[year][id];
+  if(!r) return;
+  if(!confirm('Remover '+r.name+'? Os dados de frequência serão perdidos.')) return;
+  delete APP.residentes[year][id];
+  saveApp();
+  updateCounts();
+  renderTurmaList();
+  updateResidentesList();
+  showToast('Residente removido','e');
+}
+
+function preencherAvaliacao(id, year) {
+  const r=APP.residentes[year][id];
+  if(!r) return;
+  document.getElementById('av-residente').value=r.name;
+  document.getElementById('av-ano').value=year;
+  showScreen('avaliacao');
+}
+
+// ============================================================
+// AVALIAÇÃO
 // ============================================================
 const scoreMap = {
   conhecimentos: ['val-c1'],
@@ -1051,789 +1239,472 @@ const scoreMap = {
 };
 
 function updateScore(slider) {
-  const val = parseInt(slider.value);
-  const idx = Array.from(slider.parentElement.parentElement.parentElement.querySelectorAll('.score-slider')).indexOf(slider);
-  const domain = slider.dataset.domain;
-  const ids = scoreMap[domain];
-
-  // Find which val in domain
-  const allSliders = document.querySelectorAll(`.score-slider[data-domain="${domain}"]`);
-  const sliderIdx = Array.from(allSliders).indexOf(slider);
-  const valId = ids[sliderIdx];
-  const valEl = document.getElementById(valId);
+  const val=parseInt(slider.value);
+  const domain=slider.dataset.domain;
+  const allSliders=document.querySelectorAll(`.score-slider[data-domain="${domain}"]`);
+  const idx=Array.from(allSliders).indexOf(slider);
+  const valId=scoreMap[domain][idx];
+  const valEl=document.getElementById(valId);
   if(valEl) {
-    valEl.textContent = val;
-    valEl.className = 'score-val' + (val < 5 ? ' baixo' : val < 7 ? ' medio' : '');
+    valEl.textContent=val;
+    valEl.className='score-val'+(val<5?' baixo':val<7?' medio':'');
   }
   calcDomainMedia(domain);
   calcFinal();
 }
 
 function getDomainValues(domain) {
-  const sliders = document.querySelectorAll(`.score-slider[data-domain="${domain}"]`);
-  return Array.from(sliders).map(s => parseInt(s.value));
+  return Array.from(document.querySelectorAll(`.score-slider[data-domain="${domain}"]`)).map(s=>parseInt(s.value));
 }
 
 function calcDomainMedia(domain) {
-  const vals = getDomainValues(domain);
-  const avg = vals.reduce((a,b) => a+b, 0) / vals.length;
-  const el = document.getElementById('media-' + domain);
-  if(el) el.textContent = 'Média: ' + avg.toFixed(1);
+  const vals=getDomainValues(domain);
+  const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+  const el=document.getElementById('media-'+domain);
+  if(el) el.textContent='Média: '+avg.toFixed(1);
   return avg;
 }
 
 function calcFinal() {
-  const mc = calcDomainMedia('conhecimentos');
-  const mh = calcDomainMedia('habilidades');
-  const ma = calcDomainMedia('atitudes');
-  const final = ((mc + mh + ma) / 3);
-  document.getElementById('media-final').textContent = final.toFixed(1);
-  const el = document.getElementById('conceito-texto');
-  if(final >= 9) { el.textContent = '⭐ Ótimo'; el.className = 'conceito-texto otimo'; }
-  else if(final >= 7) { el.textContent = '👍 Bom'; el.className = 'conceito-texto bom'; }
-  else if(final >= 5) { el.textContent = '📊 Regular'; el.className = 'conceito-texto regular'; }
-  else { el.textContent = '⚠️ Insatisfatório'; el.className = 'conceito-texto insatisfatorio'; }
+  const mc=calcDomainMedia('conhecimentos');
+  const mh=calcDomainMedia('habilidades');
+  const ma=calcDomainMedia('atitudes');
+  const final=(mc+mh+ma)/3;
+  document.getElementById('media-final').textContent=final.toFixed(1);
+  const el=document.getElementById('conceito-texto');
+  if(final>=9){el.textContent='⭐ Ótimo';el.className='conceito-texto otimo';}
+  else if(final>=7){el.textContent='👍 Bom';el.className='conceito-texto bom';}
+  else if(final>=5){el.textContent='📊 Regular';el.className='conceito-texto regular';}
+  else{el.textContent='⚠️ Insatisfatório';el.className='conceito-texto insatisfatorio';}
   return final;
 }
 
-// ============================================================
-// AVALIAÇÃO
-// ============================================================
 function salvarAvaliacao() {
-  const residente = document.getElementById('av-residente').value.trim();
-  const ano = document.getElementById('av-ano').value;
-  const periodo = document.getElementById('av-periodo').value;
-  const setor = document.getElementById('av-setor').value.trim();
-  const data = document.getElementById('av-data').value;
-  if(!residente || !ano || !periodo) { showToast('Preencha todos os campos obrigatórios', 'erro'); return; }
-
-  const mc = calcDomainMedia('conhecimentos');
-  const mh = calcDomainMedia('habilidades');
-  const ma = calcDomainMedia('atitudes');
-  const mf = (mc + mh + ma) / 3;
-
-  const avaliacao = {
-    id: Date.now(),
-    residente, ano, periodo, setor,
-    data: data || new Date().toISOString().split('T')[0],
-    dominios: {
-      conhecimentos: mc.toFixed(1),
-      habilidades: mh.toFixed(1),
-      atitudes: ma.toFixed(1)
-    },
-    media_final: mf.toFixed(1),
-    obs: document.getElementById('av-obs').value,
-    timestamp: Date.now()
+  const residente=document.getElementById('av-residente').value.trim();
+  const ano=document.getElementById('av-ano').value;
+  const periodo=document.getElementById('av-periodo').value;
+  const setor=document.getElementById('av-setor').value.trim();
+  const data=document.getElementById('av-data').value;
+  if(!residente||!ano||!periodo) { showToast('Preencha todos os campos obrigatórios','e'); return; }
+  const mc=calcDomainMedia('conhecimentos');
+  const mh=calcDomainMedia('habilidades');
+  const ma=calcDomainMedia('atitudes');
+  const mf=(mc+mh+ma)/3;
+  const avaliacao={
+    id:Date.now(), residente, ano, periodo, setor,
+    data:data||isoToday(),
+    dominios:{ conhecimentos:mc.toFixed(1), habilidades:mh.toFixed(1), atitudes:ma.toFixed(1) },
+    media_final:mf.toFixed(1),
+    obs:document.getElementById('av-obs').value,
+    timestamp:Date.now()
   };
-
-  const avals = load('avaliacoes');
+  const avals=loadArr('avaliacoes');
   avals.push(avaliacao);
-  save('avaliacoes', avals);
-
-  // Update datalist
+  saveArr('avaliacoes', avals);
   updateResidentesList();
-  showToast('✓ Avaliação salva com sucesso!');
   sincronizarAuto('avaliacao', avaliacao);
+  showToast('✓ Avaliação salva!','s');
   limparAvaliacao();
 }
 
 function limparAvaliacao() {
-  document.getElementById('av-residente').value = '';
-  document.getElementById('av-ano').value = '';
-  document.getElementById('av-periodo').value = '';
-  document.getElementById('av-setor').value = '';
-  document.getElementById('av-data').value = '';
-  document.getElementById('av-obs').value = '';
-  document.querySelectorAll('.score-slider').forEach(s => { s.value = 7; updateScore(s); });
+  document.getElementById('av-residente').value='';
+  document.getElementById('av-ano').value='';
+  document.getElementById('av-periodo').value='';
+  document.getElementById('av-setor').value='';
+  document.getElementById('av-data').value=isoToday();
+  document.getElementById('av-obs').value='';
+  document.querySelectorAll('.score-slider').forEach(s=>{s.value=7;updateScore(s);});
   calcFinal();
 }
 
 function updateResidentesList() {
-  const avals = load('avaliacoes');
-  const nomes = [...new Set(avals.map(a => a.residente))];
-  const dl = document.getElementById('residentes-list');
-  dl.innerHTML = nomes.map(n => `<option value="${n}">`).join('');
-}
-
-// ============================================================
-// FREQUENCIA
-// ============================================================
-let freqResidentes = [];
-
-function addFreqResidente() {
-  const nome = document.getElementById('freq-nome').value.trim();
-  if(!nome) return;
-  if(freqResidentes.find(r => r.nome === nome)) { showToast('Residente já adicionado', 'erro'); return; }
-  freqResidentes.push({ nome, status: 'presente' });
-  document.getElementById('freq-nome').value = '';
-  renderFreqResidentes();
-}
-
-function renderFreqResidentes() {
-  const container = document.getElementById('freq-residentes-container');
-  if(freqResidentes.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="icon">👥</div><p>Adicione residentes para registrar a frequência</p></div>';
-    document.getElementById('freq-resumo').textContent = '';
-    return;
-  }
-  container.innerHTML = freqResidentes.map((r, i) => `
-    <div style="padding:10px 0; border-bottom:1px solid var(--cinza-claro);">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-        <span style="font-size:13px; font-weight:600">${r.nome}</span>
-        <button onclick="removeFreqResidente(${i})" style="background:none;border:none;color:var(--cinza-escuro);cursor:pointer;font-size:14px;">✕</button>
-      </div>
-      <div class="freq-grid">
-        <button class="freq-btn presente ${r.status==='presente'?'sel':''}" onclick="setFreqStatus(${i},'presente',this)">✓ Presente</button>
-        <button class="freq-btn ausente ${r.status==='ausente'?'sel':''}" onclick="setFreqStatus(${i},'ausente',this)">✕ Ausente</button>
-        <button class="freq-btn atraso ${r.status==='atraso'?'sel':''}" onclick="setFreqStatus(${i},'atraso',this)">⏱ Atraso</button>
-      </div>
-    </div>
-  `).join('');
-  updateFreqResumo();
-}
-
-function setFreqStatus(i, status, btn) {
-  freqResidentes[i].status = status;
-  renderFreqResidentes();
-}
-
-function removeFreqResidente(i) {
-  freqResidentes.splice(i, 1);
-  renderFreqResidentes();
-}
-
-function updateFreqResumo() {
-  const total = freqResidentes.length;
-  const pres = freqResidentes.filter(r => r.status === 'presente').length;
-  const aus = freqResidentes.filter(r => r.status === 'ausente').length;
-  const atr = freqResidentes.filter(r => r.status === 'atraso').length;
-  document.getElementById('freq-resumo').textContent =
-    total ? `Total: ${total} | ✓ ${pres} Presentes | ✕ ${aus} Ausentes | ⏱ ${atr} Atrasos` : '';
-}
-
-function salvarFrequencia() {
-  if(!freqResidentes.length) { showToast('Adicione ao menos um residente', 'erro'); return; }
-  const data = document.getElementById('freq-data').value || new Date().toISOString().split('T')[0];
-  const setor = document.getElementById('freq-setor').value;
-  const registro = { id: Date.now(), data, setor, residentes: [...freqResidentes], timestamp: Date.now() };
-  const freqs = load('frequencias');
-  freqs.push(registro);
-  save('frequencias', freqs);
-  sincronizarAuto('frequencia', registro);
-  freqResidentes = [];
-  renderFreqResidentes();
-  renderConsolidado();
-  showToast('✓ Frequência registrada!');
-}
-
-function renderConsolidado() {
-  const freqs = load('frequencias');
-  const consolidado = {};
-  freqs.forEach(f => {
-    f.residentes.forEach(r => {
-      if(!consolidado[r.nome]) consolidado[r.nome] = { presente: 0, ausente: 0, atraso: 0, total: 0 };
-      consolidado[r.nome][r.status]++;
-      consolidado[r.nome].total++;
-    });
+  const names=[];
+  ['R1','R2','R3'].forEach(yr=>{
+    Object.values(APP.residentes[yr]||{}).forEach(r=>names.push(r.name));
   });
-  const container = document.getElementById('freq-consolidado');
-  const nomes = Object.keys(consolidado);
-  if(!nomes.length) {
-    container.innerHTML = '<div class="text-muted" style="text-align:center; padding:16px 0;">Salve registros para ver o consolidado</div>';
-    return;
-  }
-  container.innerHTML = nomes.map(nome => {
-    const d = consolidado[nome];
-    const pct = d.total ? Math.round((d.presente / d.total) * 100) : 0;
-    const cls = pct >= 75 ? 'verde' : pct >= 60 ? 'amarelo' : 'vermelho';
-    return `
-      <div class="prog-bar-wrap">
-        <div class="prog-bar-label">
-          <span>${nome}</span>
-          <span style="color:var(--${cls==='verde'?'verde':cls==='amarelo'?'amarelo':'vermelho'})">${pct}% presença</span>
-        </div>
-        <div class="prog-bar-bg"><div class="prog-bar ${cls}" style="width:${pct}%"></div></div>
-        <div style="font-size:10px; color:var(--cinza-escuro); margin-top:2px;">✓ ${d.presente} | ✕ ${d.ausente} | ⏱ ${d.atraso} de ${d.total} dias</div>
-      </div>
-    `;
-  }).join('');
+  const existing=loadArr('avaliacoes').map(a=>a.residente);
+  const all=[...new Set([...names,...existing])];
+  document.querySelectorAll('#residentes-list').forEach(dl=>{
+    dl.innerHTML=all.map(n=>`<option value="${n}">`).join('');
+  });
 }
 
 // ============================================================
 // HISTÓRICO
 // ============================================================
 function renderHistorico() {
-  const avals = load('avaliacoes');
-  const filtroNome = (document.getElementById('hist-filtro-nome')?.value || '').toLowerCase();
-  const filtroAno = document.getElementById('hist-filtro-ano')?.value || '';
-  const filtered = avals.filter(a =>
-    (!filtroNome || a.residente.toLowerCase().includes(filtroNome)) &&
-    (!filtroAno || a.ano === filtroAno)
-  ).sort((a,b) => b.timestamp - a.timestamp);
-
-  const container = document.getElementById('historico-container');
+  const avals=loadArr('avaliacoes');
+  const filtroNome=(document.getElementById('hist-nome')?.value||'').toLowerCase();
+  const filtroAno=document.getElementById('hist-ano')?.value||'';
+  const filtered=avals.filter(a=>
+    (!filtroNome||a.residente.toLowerCase().includes(filtroNome))&&
+    (!filtroAno||a.ano===filtroAno)
+  ).sort((a,b)=>b.timestamp-a.timestamp);
+  const container=document.getElementById('historico-container');
   if(!filtered.length) {
-    container.innerHTML = '<div class="empty-state"><div class="icon">📋</div><p>Nenhuma avaliação encontrada</p></div>';
+    container.innerHTML='<div class="empty"><div class="ei">📋</div><p>Nenhuma avaliação encontrada</p></div>';
     return;
   }
-  container.innerHTML = filtered.map(a => {
-    const nota = parseFloat(a.media_final);
-    const cls = nota >= 7 ? 'verde' : nota >= 5 ? 'medio' : 'baixo';
-    const notaCls = nota >= 7 ? 'verde' : nota >= 5 ? 'amarelo' : 'vermelho';
-    return `
-      <div class="hist-item ${cls}">
-        <div class="hist-meta">${a.data} • ${a.ano} • ${a.periodo} ${a.setor ? '• ' + a.setor : ''}</div>
-        <div style="display:flex; justify-content:space-between; align-items:flex-start">
-          <div>
-            <div class="hist-residente">${a.residente}</div>
-            <div class="hist-dominio-chips">
-              <span class="hist-chip">📘 C: ${a.dominios.conhecimentos}</span>
-              <span class="hist-chip">🔬 H: ${a.dominios.habilidades}</span>
-              <span class="hist-chip">🤝 A: ${a.dominios.atitudes}</span>
-            </div>
-            ${a.obs ? `<div style="font-size:11px; color:var(--cinza-escuro); margin-top:6px; line-height:1.4;">${a.obs}</div>` : ''}
+  container.innerHTML=filtered.map(a=>{
+    const nota=parseFloat(a.media_final);
+    const cls=nota>=7?'':'baixo':nota>=5?'medio':'baixo';
+    const notaCls=nota>=7?'verde':nota>=5?'amarelo':'vermelho';
+    return `<div class="hist-item ${cls}">
+      <div class="hist-meta">${a.data} · ${a.ano} · ${a.periodo}${a.setor?' · '+a.setor:''}</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="hist-nome">${a.residente}</div>
+          <div class="hist-chips">
+            <span class="hist-chip">📘 C: ${a.dominios.conhecimentos}</span>
+            <span class="hist-chip">🔬 H: ${a.dominios.habilidades}</span>
+            <span class="hist-chip">🤝 A: ${a.dominios.atitudes}</span>
           </div>
-          <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
-            <div class="hist-nota ${notaCls}">${nota.toFixed(1)}</div>
-            <button class="hist-btn-del" onclick="deletarAvaliacao(${a.id})">🗑️</button>
-          </div>
+          ${a.obs?`<div style="font-size:11px;color:var(--cinza-e);margin-top:6px;line-height:1.4">${a.obs}</div>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+          <div class="hist-nota ${notaCls}">${nota.toFixed(1)}</div>
+          <button onclick="deletarAvaliacao(${a.id})" style="background:none;border:none;cursor:pointer;color:var(--cinza-e);font-size:16px">🗑️</button>
         </div>
       </div>
-    `;
+    </div>`;
   }).join('');
 }
 
 function deletarAvaliacao(id) {
   if(!confirm('Excluir esta avaliação?')) return;
-  const avals = load('avaliacoes').filter(a => a.id !== id);
-  save('avaliacoes', avals);
+  saveArr('avaliacoes', loadArr('avaliacoes').filter(a=>a.id!==id));
   renderHistorico();
-  showToast('Avaliação excluída');
+  showToast('Avaliação excluída','e');
 }
 
 // ============================================================
 // FEEDBACK
 // ============================================================
-function toggleFeedback(id) {
-  const card = document.getElementById(id);
-  card.classList.toggle('open');
-}
+function toggleFb(id) { document.getElementById(id).classList.toggle('open'); }
 
 // ============================================================
 // AUTOAVALIAÇÃO
 // ============================================================
-function selectAno(ano, btn) {
-  currentAnoAuto = ano;
-  document.querySelectorAll('.ano-btn').forEach(b => b.classList.remove('sel'));
+function selectAutoAno(ano, btn) {
+  currentAnoAuto=ano;
+  document.querySelectorAll('.ano-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
   renderAutoCompetencias();
 }
 
 function renderAutoCompetencias() {
-  const competencias = COMPETENCIAS[currentAnoAuto];
-  document.getElementById('auto-comp-titulo').textContent = `Competências ${currentAnoAuto} – CNRM/SBP`;
-  const container = document.getElementById('auto-competencias-container');
-  container.innerHTML = competencias.map((c, i) => `
-    <div class="competencia-item">
-      <div class="competencia-txt">${i+1}. ${c}</div>
-      <div class="likert-row" data-comp="${i}">
-        <button class="likert-btn" onclick="selectLikert(this,0,'auto-c${i}')">1<br><span style="font-size:9px">Não atingi</span></button>
-        <button class="likert-btn" onclick="selectLikert(this,1,'auto-c${i}')">2<br><span style="font-size:9px">Parcial</span></button>
-        <button class="likert-btn" onclick="selectLikert(this,2,'auto-c${i}')">3<br><span style="font-size:9px">Desenvolv.</span></button>
-        <button class="likert-btn" onclick="selectLikert(this,3,'auto-c${i}')">4<br><span style="font-size:9px">Atingi</span></button>
+  const comps=COMPETENCIAS[currentAnoAuto];
+  document.getElementById('auto-comp-titulo').textContent='Competências '+currentAnoAuto+' – CNRM/SBP';
+  const container=document.getElementById('auto-competencias-container');
+  container.innerHTML=comps.map((c,i)=>`
+    <div class="comp-item">
+      <div class="comp-txt">${i+1}. ${c}</div>
+      <div class="likert-row">
+        <button class="likert-btn" onclick="selectLikert(this,1)">1<br><span style="font-size:9px">Não atingi</span></button>
+        <button class="likert-btn" onclick="selectLikert(this,2)">2<br><span style="font-size:9px">Parcial</span></button>
+        <button class="likert-btn" onclick="selectLikert(this,3)">3<br><span style="font-size:9px">Desenvolv.</span></button>
+        <button class="likert-btn" onclick="selectLikert(this,4)">4<br><span style="font-size:9px">Atingi</span></button>
       </div>
     </div>
   `).join('');
 }
 
-function selectLikert(btn, val, key) {
-  const row = btn.parentElement;
-  row.querySelectorAll('.likert-btn').forEach(b => b.className = 'likert-btn');
-  btn.classList.add(`sel-${val+1}`);
-  btn.dataset.key = key;
+function selectLikert(btn, val) {
+  const row=btn.parentElement;
+  row.querySelectorAll('.likert-btn').forEach(b=>b.className='likert-btn');
+  btn.classList.add('sel-'+val);
 }
 
 function salvarAutoaval() {
-  const nome = document.getElementById('auto-nome').value.trim();
-  const periodo = document.getElementById('auto-periodo').value;
-  if(!nome) { showToast('Informe seu nome', 'erro'); return; }
-  const reflexao = document.getElementById('auto-reflexao').value;
-  const competencias = COMPETENCIAS[currentAnoAuto];
-  const respostas = [];
-  document.querySelectorAll('#auto-competencias-container .likert-row').forEach((row, i) => {
-    const sel = row.querySelector('.likert-btn[class*="sel-"]');
-    respostas.push({ competencia: competencias[i], nota: sel ? parseInt(sel.textContent[0]) : null });
+  const nome=document.getElementById('auto-nome').value.trim();
+  const periodo=document.getElementById('auto-periodo').value;
+  if(!nome) { showToast('Informe seu nome','e'); return; }
+  const reflexao=document.getElementById('auto-reflexao').value;
+  const comps=COMPETENCIAS[currentAnoAuto];
+  const respostas=[];
+  document.querySelectorAll('#auto-competencias-container .likert-row').forEach((row,i)=>{
+    const sel=row.querySelector('.likert-btn[class*="sel-"]');
+    respostas.push({ competencia:comps[i], nota:sel?parseInt(sel.textContent[0]):null });
   });
-  const auto = { id: Date.now(), nome, ano: currentAnoAuto, periodo, respostas, reflexao, timestamp: Date.now() };
-  const autos = load('autoavaliacoes');
+  const auto={ id:Date.now(), nome, ano:currentAnoAuto, periodo, respostas, reflexao, timestamp:Date.now() };
+  const autos=loadArr('autoavaliacoes');
   autos.push(auto);
-  save('autoavaliacoes', autos);
+  saveArr('autoavaliacoes', autos);
   sincronizarAuto('autoavaliacao', auto);
-  showToast('✓ Autoavaliação salva!');
-  document.getElementById('auto-reflexao').value = '';
+  showToast('✓ Autoavaliação salva!','s');
+  document.getElementById('auto-reflexao').value='';
 }
 
 // ============================================================
 // DASHBOARD
 // ============================================================
 function renderDashboard() {
-  const avals = load('avaliacoes');
-  const freqs = load('frequencias');
-  const autos = load('autoavaliacoes');
-
-  // Stats
-  const totalAvals = avals.length;
-  const residentes = [...new Set(avals.map(a => a.residente))];
-  const medias = residentes.map(r => {
-    const rs = avals.filter(a => a.residente === r);
-    return { nome: r, media: rs.reduce((s,a) => s + parseFloat(a.media_final), 0) / rs.length, count: rs.length };
+  const avals=loadArr('avaliacoes');
+  const residentes=[...new Set(avals.map(a=>a.residente))];
+  const medias=residentes.map(r=>{
+    const rs=avals.filter(a=>a.residente===r);
+    return { nome:r, media:rs.reduce((s,a)=>s+parseFloat(a.media_final),0)/rs.length, count:rs.length };
   });
-  const mediaGeral = medias.length ? medias.reduce((s,m) => s + m.media, 0) / medias.length : 0;
-  const criticos = medias.filter(m => m.media < 5).length;
+  const totalRes=['R1','R2','R3'].reduce((s,yr)=>s+Object.keys(APP.residentes[yr]||{}).length,0);
+  const mediaGeral=medias.length?medias.reduce((s,m)=>s+m.media,0)/medias.length:0;
+  const criticos=medias.filter(m=>m.media<5).length;
 
-  document.getElementById('dash-stats').innerHTML = `
-    <div class="dash-stat verde"><div class="ds-val">${totalAvals}</div><div class="ds-label">Avaliações</div></div>
-    <div class="dash-stat azul"><div class="ds-val">${residentes.length}</div><div class="ds-label">Residentes</div></div>
-    <div class="dash-stat ${mediaGeral >= 7 ? 'verde' : mediaGeral >= 5 ? 'amarelo' : 'vermelho'}">
-      <div class="ds-val">${mediaGeral ? mediaGeral.toFixed(1) : '–'}</div><div class="ds-label">Média Geral</div>
+  document.getElementById('dash-stats').innerHTML=`
+    <div class="dash-stat verde"><div class="ds-val">${totalRes}</div><div class="ds-label">Residentes</div></div>
+    <div class="dash-stat azul"><div class="ds-val">${avals.length}</div><div class="ds-label">Avaliações</div></div>
+    <div class="dash-stat ${mediaGeral>=7?'verde':mediaGeral>=5?'amarelo':'vermelho'}">
+      <div class="ds-val">${mediaGeral?mediaGeral.toFixed(1):'–'}</div><div class="ds-label">Média Geral</div>
     </div>
-    <div class="dash-stat ${criticos > 0 ? 'vermelho' : 'verde'}"><div class="ds-val">${criticos}</div><div class="ds-label">Em Atenção</div></div>
+    <div class="dash-stat ${criticos>0?'vermelho':'verde'}"><div class="ds-val">${criticos}</div><div class="ds-label">Em Atenção</div></div>
   `;
 
-  // Ranking
-  const sorted = [...medias].sort((a,b) => b.media - a.media);
-  document.getElementById('dash-ranking').innerHTML = sorted.length ? sorted.map((m, i) => {
-    const cls = m.media >= 7 ? 'verde' : m.media >= 5 ? 'amarelo' : 'vermelho';
-    const posCls = i === 0 ? 'p1' : i === 1 ? 'p2' : i === 2 ? 'p3' : '';
-    return `
-      <div class="rank-item">
-        <div class="rank-pos ${posCls}">${i+1}</div>
-        <div class="rank-info">
-          <div class="rank-nome">${m.nome}</div>
-          <div class="rank-sub">${m.count} avaliação${m.count>1?'ões':''}</div>
-        </div>
-        <div class="rank-nota ${cls}">${m.media.toFixed(1)}</div>
+  // Frequência (new APP data)
+  const freqContainer=document.getElementById('dash-freq');
+  const years=['R1','R2','R3'];
+  const colorMap={R1:'azul',R2:'roxo',R3:'verde'};
+  let freqHtml='';
+  years.forEach(yr=>{
+    const prog=APP.programas[yr]||{};
+    const ids=Object.keys(APP.residentes[yr]||{});
+    if(!ids.length) return;
+    const days=(prog.startDate&&prog.endDate)?getWeekdays(prog.startDate,prog.endDate):[];
+    let total=0,pres=0;
+    ids.forEach(id=>{
+      const r=APP.residentes[yr][id];
+      days.forEach(d=>{
+        const att=(r.attendance||{})[d]||{};
+        if(att.morning!==null&&att.morning!==undefined){total++;if(att.morning==='P')pres++;}
+        if(att.afternoon!==null&&att.afternoon!==undefined){total++;if(att.afternoon==='P')pres++;}
+      });
+    });
+    const pct=total?Math.round(pres/total*100):null;
+    const cls=pct===null?'':pct>=75?'verde':pct>=60?'amarelo':'vermelho';
+    freqHtml+=`<div class="pb-wrap">
+      <div class="pb-label">
+        <span><strong>${yr}</strong> — ${prog.moduloName||'sem módulo'} (${ids.length} res.)</span>
+        <span style="color:var(--${cls||'cinza-e'})">${pct!==null?pct+'%':'sem reg.'}</span>
       </div>
-    `;
-  }).join('') : '<div class="text-muted" style="text-align:center;padding:12px">Nenhum dado disponível</div>';
+      <div class="pb-bg"><div class="pb ${cls}" style="width:${pct||0}%"></div></div>
+    </div>`;
+  });
+  freqContainer.innerHTML=freqHtml||'<div style="text-align:center;color:var(--cinza-e);padding:16px;font-size:12px">Configure os módulos e cadastre residentes.</div>';
+
+  // Ranking
+  const sorted=[...medias].sort((a,b)=>b.media-a.media);
+  document.getElementById('dash-ranking').innerHTML=sorted.length?sorted.map((m,i)=>{
+    const cls=m.media>=7?'verde':m.media>=5?'amarelo':'vermelho';
+    const pos=i===0?'p1':i===1?'p2':i===2?'p3':'';
+    return `<div class="rank-item">
+      <div class="rank-pos ${pos}">${i+1}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700">${m.nome}</div><div style="font-size:11px;color:var(--cinza-e)">${m.count} avaliação${m.count>1?'ões':''}</div></div>
+      <div style="font-size:18px;font-weight:800;color:var(--${cls})">${m.media.toFixed(1)}</div>
+    </div>`;
+  }).join(''):'<div style="text-align:center;color:var(--cinza-e);padding:12px;font-size:12px">Nenhum dado disponível</div>';
 
   // Domínios
   if(avals.length) {
-    const avgC = avals.reduce((s,a) => s + parseFloat(a.dominios.conhecimentos), 0) / avals.length;
-    const avgH = avals.reduce((s,a) => s + parseFloat(a.dominios.habilidades), 0) / avals.length;
-    const avgA = avals.reduce((s,a) => s + parseFloat(a.dominios.atitudes), 0) / avals.length;
-    const mkBar = (label, val) => {
-      const pct = (val / 10) * 100;
-      const cls = val >= 7 ? '' : val >= 5 ? 'amarelo' : 'vermelho';
-      return `
-        <div class="prog-bar-wrap">
-          <div class="prog-bar-label"><span>${label}</span><span>${val.toFixed(1)}</span></div>
-          <div class="prog-bar-bg"><div class="prog-bar ${cls}" style="width:${pct}%"></div></div>
-        </div>`;
+    const avgC=avals.reduce((s,a)=>s+parseFloat(a.dominios.conhecimentos),0)/avals.length;
+    const avgH=avals.reduce((s,a)=>s+parseFloat(a.dominios.habilidades),0)/avals.length;
+    const avgA=avals.reduce((s,a)=>s+parseFloat(a.dominios.atitudes),0)/avals.length;
+    const mk=(label,val)=>{
+      const pct=(val/10)*100, cls=val>=7?'':val>=5?'amarelo':'vermelho';
+      return `<div class="pb-wrap">
+        <div class="pb-label"><span>${label}</span><span>${val.toFixed(1)}</span></div>
+        <div class="pb-bg"><div class="pb ${cls||'verde'}" style="width:${pct}%"></div></div>
+      </div>`;
     };
-    document.getElementById('dash-dominios').innerHTML =
-      mkBar('📘 Conhecimentos', avgC) + mkBar('🔬 Habilidades', avgH) + mkBar('🤝 Atitudes', avgA);
+    document.getElementById('dash-dominios').innerHTML=mk('📘 Conhecimentos',avgC)+mk('🔬 Habilidades',avgH)+mk('🤝 Atitudes',avgA);
   } else {
-    document.getElementById('dash-dominios').innerHTML = '<div class="text-muted" style="text-align:center;padding:12px">Nenhum dado disponível</div>';
+    document.getElementById('dash-dominios').innerHTML='<div style="text-align:center;color:var(--cinza-e);padding:12px;font-size:12px">Nenhum dado disponível</div>';
   }
 
   // Alertas
-  const alertas = medias.filter(m => m.media < 7);
-  const alertaEl = document.getElementById('dash-alertas');
-  if(!alertas.length) {
-    alertaEl.innerHTML = '<div class="alert-box info"><span>✅</span><span>Nenhum residente em situação crítica no momento.</span></div>';
-  } else {
-    alertaEl.innerHTML = alertas.map(m => {
-      const tipo = m.media < 5 ? 'critico' : 'aviso';
-      const icon = m.media < 5 ? '🔴' : '🟡';
-      return `<div class="alert-box ${tipo}"><span>${icon}</span><span><strong>${m.nome}</strong> – Média ${m.media.toFixed(1)} (${m.media < 5 ? 'Insatisfatório' : 'Regular'})</span></div>`;
-    }).join('');
-  }
+  const alertas=medias.filter(m=>m.media<7);
+  const alertaEl=document.getElementById('dash-alertas');
+  alertaEl.innerHTML=!alertas.length
+    ?'<div class="alert verde"><span>✅</span><span>Nenhum residente em situação crítica no momento.</span></div>'
+    :alertas.map(m=>{
+        const tipo=m.media<5?'critico':'aviso';
+        const icon=m.media<5?'🔴':'🟡';
+        return `<div class="alert ${tipo==='critico'?'aviso':'info'}"><span>${icon}</span><span><strong>${m.nome}</strong> – Média ${m.media.toFixed(1)} (${m.media<5?'Insatisfatório':'Regular'})</span></div>`;
+      }).join('');
 }
+
+function limparTodosDados() {
+  if(!confirm('Tem certeza? Todos os dados serão excluídos permanentemente.')) return;
+  localStorage.removeItem('avaliacoes');
+  localStorage.removeItem('autoavaliacoes');
+  localStorage.removeItem(KEY);
+  APP={ preceptorName:'', programas:{ R1:{moduloName:'',startDate:'',endDate:'',morning:'Manhã',afternoon:'Tarde'}, R2:{moduloName:'',startDate:'',endDate:'',morning:'Manhã',afternoon:'Tarde'}, R3:{moduloName:'',startDate:'',endDate:'',morning:'Manhã',afternoon:'Tarde'} }, residentes:{R1:{},R2:{},R3:{}} };
+  renderDashboard();
+  showToast('Dados excluídos','e');
+}
+
+// ============================================================
+// CONFIG
+// ============================================================
+function saveConfig() {
+  APP.preceptorName=document.getElementById('cfg-preceptor').value.trim();
+  ['R1','R2','R3'].forEach(yr=>{
+    if(!APP.programas[yr]) APP.programas[yr]={};
+    APP.programas[yr].moduloName=document.getElementById('cfg-'+yr+'-mod').value.trim();
+    APP.programas[yr].startDate=document.getElementById('cfg-'+yr+'-ini').value;
+    APP.programas[yr].endDate=document.getElementById('cfg-'+yr+'-fim').value;
+    APP.programas[yr].morning=document.getElementById('cfg-'+yr+'-m').value.trim()||'Manhã';
+    APP.programas[yr].afternoon=document.getElementById('cfg-'+yr+'-t').value.trim()||'Tarde';
+  });
+  saveApp();
+}
+
+function restoreConfig() {
+  document.getElementById('cfg-preceptor').value=APP.preceptorName||'';
+  ['R1','R2','R3'].forEach(yr=>{
+    const p=APP.programas[yr]||{};
+    document.getElementById('cfg-'+yr+'-mod').value=p.moduloName||'';
+    document.getElementById('cfg-'+yr+'-ini').value=p.startDate||'';
+    document.getElementById('cfg-'+yr+'-fim').value=p.endDate||'';
+    document.getElementById('cfg-'+yr+'-m').value=p.morning||'';
+    document.getElementById('cfg-'+yr+'-t').value=p.afternoon||'';
+  });
+}
+
+function recalcFim(yr) {
+  const ini=document.getElementById('cfg-'+yr+'-ini').value;
+  if(!ini) return;
+  document.getElementById('cfg-'+yr+'-fim').value=addMonths(ini,2);
+  saveConfig();
+}
+
+// ============================================================
+// MODALS
+// ============================================================
+function fecharModal(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.modal-ov').forEach(m=>m.addEventListener('click',function(e){if(e.target===this)this.classList.remove('show');}));
 
 // ============================================================
 // SYNC — Google Sheets via Apps Script
 // ============================================================
+function getScriptUrl() { return localStorage.getItem('residped_script_url')||''; }
 
-// ── Cole aqui a URL do seu Web App após publicar no Apps Script ──
-const APPS_SCRIPT_URL = localStorage.getItem('apps_script_url') || '';
-
-// Fila de itens pendentes para envio offline
-function getPendentes() { return JSON.parse(localStorage.getItem('sync_pendentes') || '[]'); }
-function setPendentes(arr) { localStorage.setItem('sync_pendentes', JSON.stringify(arr)); }
-function addPendente(tipo, dados) {
-  const pendentes = getPendentes();
-  pendentes.push({ tipo, dados, tentativas: 0, adicionado: Date.now() });
-  setPendentes(pendentes);
-  atualizarStatusSync();
-}
-function removerPendente(index) {
-  const pendentes = getPendentes();
-  pendentes.splice(index, 1);
-  setPendentes(pendentes);
-  atualizarStatusSync();
-}
-
-// ── Status visual no header ──────────────────────────────────
 function atualizarStatusSync() {
-  const pendentes = getPendentes();
-  const btn = document.querySelector('.header-sync-btn');
+  const btn=document.getElementById('btn-sync');
   if(!btn) return;
-  if(!APPS_SCRIPT_URL) {
-    btn.innerHTML = '⚙️ Config';
-    btn.style.background = 'rgba(255,255,255,0.15)';
-    btn.onclick = abrirConfigSync;
-    return;
-  }
-  if(pendentes.length > 0) {
-    btn.innerHTML = `⏳ ${pendentes.length} pendente${pendentes.length>1?'s':''}`;
-    btn.style.background = 'rgba(245,166,35,0.4)';
-  } else {
-    btn.innerHTML = '✓ Sincronizado';
-    btn.style.background = 'rgba(0,168,107,0.4)';
-  }
-  btn.onclick = syncData;
+  const pendentes=getPendentes();
+  if(!getScriptUrl()){btn.textContent='⚙️ Config';btn.onclick=abrirModalSync;return;}
+  if(pendentes.length>0){btn.textContent='⏳ '+pendentes.length+' pend.';}
+  else{btn.textContent='↑ Sync';}
+  btn.onclick=syncData;
 }
 
-// ── Enviar um item para o Sheets ─────────────────────────────
+function getPendentes(){return JSON.parse(localStorage.getItem('residped_pendentes')||'[]');}
+function setPendentes(arr){localStorage.setItem('residped_pendentes',JSON.stringify(arr));}
+function addPendente(tipo,dados){const p=getPendentes();p.push({tipo,dados,tentativas:0,ts:Date.now()});setPendentes(p);atualizarStatusSync();}
+
 async function enviarParaSheets(tipo, dados) {
-  if(!APPS_SCRIPT_URL) return false;
+  const url=getScriptUrl(); if(!url) return false;
   try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' }, // Apps Script exige text/plain para CORS
-      body: JSON.stringify({ tipo, dados })
-    });
-    const json = await res.json();
-    return json.ok === true;
-  } catch(e) {
-    console.warn('[Sync] Offline ou erro:', e.message);
-    return false;
-  }
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({tipo,dados})});
+    const json=await res.json(); return json.ok===true;
+  } catch(e){ return false; }
 }
 
-// ── Sync automático: chamado após cada salvar ────────────────
 async function sincronizarAuto(tipo, dados) {
-  if(!APPS_SCRIPT_URL) {
-    addPendente(tipo, dados);
-    return;
-  }
-  // Tenta enviar agora
-  mostrarIndicadorSync(true);
-  const ok = await enviarParaSheets(tipo, dados);
-  mostrarIndicadorSync(false);
-  if(ok) {
-    showToast('☁️ Sincronizado com Google Sheets');
-    marcarSincronizado(dados.id);
-  } else {
-    // Offline — guarda na fila
-    addPendente(tipo, dados);
-    showToast('📵 Sem internet — salvo localmente', 'erro');
-  }
-  // Tenta esvaziar a fila de pendentes
+  const url=getScriptUrl();
+  if(!url){addPendente(tipo,dados);return;}
+  const ok=await enviarParaSheets(tipo,dados);
+  if(ok){showToast('☁️ Sincronizado!','s');}
+  else{addPendente(tipo,dados);}
+  atualizarStatusSync();
   processarFila();
 }
 
-// ── Processar fila de pendentes ──────────────────────────────
 async function processarFila() {
-  if(!APPS_SCRIPT_URL) return;
-  const pendentes = getPendentes();
-  if(!pendentes.length) return;
-  let enviados = 0;
-  for(let i = pendentes.length - 1; i >= 0; i--) {
-    const p = pendentes[i];
-    if(p.tentativas >= 5) continue; // desiste após 5 tentativas
-    const ok = await enviarParaSheets(p.tipo, p.dados);
-    if(ok) {
-      removerPendente(i);
-      marcarSincronizado(p.dados.id);
-      enviados++;
-    } else {
-      pendentes[i].tentativas++;
-      setPendentes(pendentes);
-      break; // Para se offline — não tenta os demais
-    }
+  const url=getScriptUrl(); if(!url) return;
+  const pendentes=getPendentes(); if(!pendentes.length) return;
+  for(let i=pendentes.length-1;i>=0;i--){
+    if(pendentes[i].tentativas>=5) continue;
+    const ok=await enviarParaSheets(pendentes[i].tipo,pendentes[i].dados);
+    if(ok){pendentes.splice(i,1);setPendentes(pendentes);}
+    else{pendentes[i].tentativas++;setPendentes(pendentes);break;}
   }
-  if(enviados > 0) {
-    showToast(`☁️ ${enviados} registro${enviados>1?'s':''} sincronizado${enviados>1?'s':''}`);
-    atualizarStatusSync();
-  }
-}
-
-// ── Sync manual (botão no header) ───────────────────────────
-async function syncData() {
-  if(!APPS_SCRIPT_URL) { abrirConfigSync(); return; }
-  const pendentes = getPendentes();
-  if(!pendentes.length) {
-    // Envia tudo (batch completo para garantir)
-    mostrarIndicadorSync(true);
-    const ok = await enviarParaSheets('batch', {
-      avaliacoes: load('avaliacoes'),
-      frequencias: load('frequencias'),
-      autoavaliacoes: load('autoavaliacoes')
-    });
-    mostrarIndicadorSync(false);
-    showToast(ok ? '☁️ Tudo sincronizado!' : '📵 Sem internet — tente novamente', ok ? 'sucesso' : 'erro');
-    return;
-  }
-  showToast('🔄 Enviando pendentes...');
-  await processarFila();
-}
-
-// ── Marcar registro como sincronizado ───────────────────────
-function marcarSincronizado(id) {
-  const sinc = JSON.parse(localStorage.getItem('sync_ids') || '[]');
-  if(!sinc.includes(id)) { sinc.push(id); localStorage.setItem('sync_ids', JSON.stringify(sinc)); }
-}
-function jaSincronizado(id) {
-  return JSON.parse(localStorage.getItem('sync_ids') || '[]').includes(id);
-}
-
-// ── Indicador visual de loading ──────────────────────────────
-function mostrarIndicadorSync(ativo) {
-  const btn = document.querySelector('.header-sync-btn');
-  if(!btn) return;
-  btn.innerHTML = ativo ? '🔄 Enviando...' : (getPendentes().length ? `⏳ ${getPendentes().length} pend.` : '✓ Sync');
-}
-
-// ── Modal de configuração ────────────────────────────────────
-function abrirConfigSync() {
-  const modal = document.getElementById('modal-config-sync');
-  if(modal) {
-    document.getElementById('input-apps-url').value = APPS_SCRIPT_URL;
-    modal.classList.add('show');
-  }
-}
-function fecharConfigSync() {
-  document.getElementById('modal-config-sync')?.classList.remove('show');
-}
-function salvarConfigSync() {
-  const url = document.getElementById('input-apps-url').value.trim();
-  if(!url.startsWith('https://script.google.com')) {
-    showToast('URL inválida. Use a URL do Apps Script', 'erro'); return;
-  }
-  localStorage.setItem('apps_script_url', url);
-  // Recarrega constante
-  Object.defineProperty(window, 'APPS_SCRIPT_URL', { value: url, writable: true });
-  window.APPS_SCRIPT_URL_REAL = url;
-  fecharConfigSync();
   atualizarStatusSync();
-  showToast('✓ URL salva! Testando conexão...');
-  setTimeout(testarConexao, 500);
 }
-async function testarConexao() {
-  const url = localStorage.getItem('apps_script_url');
-  if(!url) return;
-  try {
-    const res = await fetch(url);
-    const json = await res.json();
-    if(json.ok) {
-      showToast('✅ Conexão com Google Sheets OK!');
-      processarFila();
-    } else {
-      showToast('⚠️ Apps Script respondeu com erro', 'erro');
-    }
-  } catch(e) {
-    showToast('❌ Não foi possível conectar. Verifique a URL.', 'erro');
+
+async function syncData() {
+  const url=getScriptUrl();
+  if(!url){abrirModalSync();return;}
+  const btn=document.getElementById('btn-sync');
+  if(btn) btn.textContent='🔄...';
+  const pendentes=getPendentes();
+  let ok=false;
+  if(pendentes.length>0){
+    await processarFila();
+    ok=true;
+  } else {
+    // Full batch sync
+    ok=await enviarParaSheets('batch',{
+      avaliacoes:loadArr('avaliacoes'),
+      autoavaliacoes:loadArr('autoavaliacoes'),
+      residentes:APP
+    });
   }
+  showToast(ok?'☁️ Sincronizado!':'📵 Sem conexão',ok?'s':'e');
+  atualizarStatusSync();
+}
+
+function abrirModalSync() {
+  document.getElementById('input-sync-url').value=getScriptUrl();
+  document.getElementById('modal-sync').classList.add('show');
+}
+
+function salvarConfigSync() {
+  const url=document.getElementById('input-sync-url').value.trim();
+  if(!url.startsWith('https://script.google.com')){showToast('URL inválida','e');return;}
+  localStorage.setItem('residped_script_url',url);
+  fecharModal('modal-sync');
+  showToast('✓ URL salva!','s');
+  atualizarStatusSync();
 }
 
 // ============================================================
-// LIMPAR TUDO
+// PWA
 // ============================================================
-function limparTodosDados() {
-  if(!confirm('Tem certeza? Todos os dados serão excluídos permanentemente.')) return;
-  localStorage.removeItem('avaliacoes');
-  localStorage.removeItem('frequencias');
-  localStorage.removeItem('autoavaliacoes');
-  renderDashboard();
-  showToast('Dados excluídos', 'erro');
-}
-
-// ============================================================
-// PWA – Service Worker + Install Prompt
-// ============================================================
-let deferredPrompt = null;
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
+let deferredPrompt=null;
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
     navigator.serviceWorker.register('./service-worker.js')
-      .then(reg => {
-        console.log('[App] SW registrado:', reg.scope);
-        reg.addEventListener('updatefound', () => {
-          const newWorker = reg.installing;
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              showUpdateBanner();
-            }
+      .then(reg=>{
+        reg.addEventListener('updatefound',()=>{
+          const nw=reg.installing;
+          nw.addEventListener('statechange',()=>{
+            if(nw.state==='installed'&&navigator.serviceWorker.controller)
+              document.getElementById('update-banner').style.display='flex';
           });
         });
-      })
-      .catch(err => console.warn('[App] SW erro:', err));
+      }).catch(e=>console.warn('[SW]',e));
   });
 }
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  showInstallBanner();
-});
-
-window.addEventListener('appinstalled', () => {
-  deferredPrompt = null;
-  hideInstallBanner();
-  showToast('✓ App instalado com sucesso!');
-});
-
-function showInstallBanner() {
-  const b = document.getElementById('install-banner');
-  if(b) b.style.display = 'flex';
-}
-function hideInstallBanner() {
-  const b = document.getElementById('install-banner');
-  if(b) b.style.display = 'none';
-}
-async function installApp() {
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  if(outcome === 'accepted') showToast('✓ Instalando o app...');
-  deferredPrompt = null;
-  hideInstallBanner();
-}
-function showUpdateBanner() {
-  const b = document.getElementById('update-banner');
-  if(b) b.style.display = 'flex';
-}
-function applyUpdate() {
-  navigator.serviceWorker.getRegistration().then(reg => {
-    if(reg && reg.waiting) {
-      reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-      window.location.reload();
-    }
-  });
-}
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('install-banner').style.display='flex';});
+window.addEventListener('appinstalled',()=>{deferredPrompt=null;document.getElementById('install-banner').style.display='none';showToast('✓ App instalado!','s');});
+async function installApp(){if(!deferredPrompt)return;deferredPrompt.prompt();const{outcome}=await deferredPrompt.userChoice;if(outcome==='accepted')showToast('✓ Instalando...','s');deferredPrompt=null;document.getElementById('install-banner').style.display='none';}
+function applyUpdate(){navigator.serviceWorker.getRegistration().then(reg=>{if(reg&&reg.waiting){reg.waiting.postMessage({type:'SKIP_WAITING'});window.location.reload();}});}
 
 // ============================================================
 // INIT
 // ============================================================
-window.addEventListener('DOMContentLoaded', () => {
-  // Data padrão hoje
-  const hoje = new Date().toISOString().split('T')[0];
-  document.getElementById('av-data').value = hoje;
-  document.getElementById('freq-data').value = hoje;
+window.addEventListener('DOMContentLoaded',()=>{
+  loadApp();
+  currentDay=isoToday();
+  document.getElementById('av-data').value=isoToday();
   updateResidentesList();
+  renderHome();
+  document.querySelectorAll('.score-slider').forEach(s=>updateScore(s));
   calcFinal();
   renderAutoCompetencias();
-
-  // Inicializar todos os sliders
-  document.querySelectorAll('.score-slider').forEach(s => updateScore(s));
-  calcFinal();
-});
-</script>
-<!-- MODAL: CONFIGURAR GOOGLE SHEETS -->
-<div class="modal-overlay" id="modal-config-sync">
-  <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⚙️ Configurar Google Sheets</div>
-
-    <div style="font-size:12px; color:var(--cinza-escuro); margin-bottom:14px; line-height:1.6;">
-      Cole aqui a URL do seu Web App publicado no Google Apps Script. Os dados serão enviados automaticamente toda vez que você salvar uma avaliação.
-    </div>
-
-    <div style="background:rgba(0,180,200,0.08); border-left:3px solid var(--turquesa);
-      border-radius:8px; padding:10px 12px; font-size:11px; margin-bottom:14px; line-height:1.7;">
-      <strong>Como obter a URL:</strong><br>
-      1. Abra <strong>script.google.com</strong><br>
-      2. Crie novo projeto → cole o <code>Code.gs</code><br>
-      3. Clique em <strong>Implantar → Nova implantação</strong><br>
-      4. Tipo: <strong>App da Web</strong><br>
-      5. Executar como: <strong>Eu</strong><br>
-      6. Quem pode acessar: <strong>Qualquer pessoa</strong><br>
-      7. Copie a URL gerada e cole abaixo
-    </div>
-
-    <div class="form-group">
-      <label>URL do Web App</label>
-      <input type="text" id="input-apps-url"
-        placeholder="https://script.google.com/macros/s/...">
-    </div>
-
-    <div id="sync-pendentes-info" style="font-size:12px; color:var(--cinza-escuro); margin-bottom:12px;"></div>
-
-    <button class="btn btn-primary" onclick="salvarConfigSync()">✓ Salvar e Testar Conexão</button>
-    <button class="btn btn-secondary" onclick="fecharConfigSync()" style="margin-top:8px">Cancelar</button>
-  </div>
-</div>
-
-<script>
-// Inicialização extra após DOM carregado
-document.addEventListener('DOMContentLoaded', () => {
-  // Recupera URL salva
-  const url = localStorage.getItem('apps_script_url');
-  if(url) {
-    window.APPS_SCRIPT_URL_REAL = url;
-  }
-
-  // Atualiza status do botão
-  setTimeout(atualizarStatusSync, 300);
-
-  // Verifica e processa fila quando volta online
-  window.addEventListener('online', () => {
-    showToast('🌐 Conexão restaurada — enviando pendentes...');
-    setTimeout(processarFila, 1000);
-  });
-
-  // Mostra info de pendentes no modal ao abrir
-  document.getElementById('modal-config-sync')?.addEventListener('click', function(e) {
-    if(e.target === this) fecharConfigSync();
-    const p = getPendentes().length;
-    const el = document.getElementById('sync-pendentes-info');
-    if(el) el.textContent = p > 0
-      ? `⏳ ${p} registro${p>1?'s':''} aguardando sincronização`
-      : '✅ Nenhum registro pendente';
-  });
-});
-
-// Override APPS_SCRIPT_URL para usar o valor do localStorage dinamicamente
-function getScriptUrl() {
-  return localStorage.getItem('apps_script_url') || '';
-}
-// Patch nas funções que usam APPS_SCRIPT_URL
-const _enviarParaSheets = enviarParaSheets;
-async function enviarParaSheets(tipo, dados) {
-  const url = getScriptUrl();
-  if(!url) return false;
-  try {
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ tipo, dados })
-    });
-    const json = await res.json();
-    return json.ok === true;
-  } catch(e) {
-    console.warn('[Sync] Offline ou erro:', e.message);
-    return false;
-  }
-}
-async function sincronizarAuto(tipo, dados) {
-  const url = getScriptUrl();
-  if(!url) {
-    addPendente(tipo, dados);
-    return;
-  }
-  mostrarIndicadorSync(true);
-  const ok = await enviarParaSheets(tipo, dados);
-  mostrarIndicadorSync(false);
-  if(ok) {
-    marcarSincronizado(dados.id);
-    atualizarStatusSync();
-  } else {
-    addPendente(tipo, dados);
-  }
   atualizarStatusSync();
-}
+  window.addEventListener('online',()=>{showToast('🌐 Online','s');setTimeout(processarFila,1000);});
+});
 </script>
 </body>
 </html>
